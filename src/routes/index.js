@@ -3,6 +3,7 @@ import CoreLayout from '../layouts/PageLayout/PageLayout'
 import Home from './Home'
 import Content from './Content'
 import CounterRoute from './Counter'
+import Addnews from './Add_news'
 
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -13,7 +14,7 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [
-    CounterRoute(store), Content(store)
+    CounterRoute(store), Content(store), Addnews(store)
   ]
 })
 
