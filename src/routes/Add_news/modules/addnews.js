@@ -16,21 +16,30 @@ export const actions = {
 // Actions
 // ------------------------------------
 export function addNews() {
-    return (dispatch) => {
-        dispatch({
-            type: ADD_NEWS,
-        })
-    }
-    //return state
-    //return initialState
-}
+    return (dispatch, getState) => {
+        return axios.get('/qqz')
+            .then(function (response) {
+                dispatch({
+                    type    : DONE,
+                    payload : response,
+                    data: 'lol kek cheburek'
+                })
+            })
+            .catch(function (error) {
+                dispatch({
+                    type    : ERROR_ACTION,
+                    payload : error
+                })
+            });
+}}
+
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
-// export const ACTION_HANDLERS = {
-//     MULTIPLY_NUMBER : (state, action) => state.label * action.payload
-// }
+export const ACTION_HANDLERS = {
+
+}
 
 
 // ------------------------------------
@@ -38,14 +47,7 @@ export function addNews() {
 // ------------------------------------
 const initialState = {label: 1};
 export default function counterReducer (state = initialState, action) {
-    // const handler = ACTION_HANDLERS[action.type]
-    //
-    // return handler ? handler(state, action) : state
+    const handler = ACTION_HANDLERS[action.type]
 
-    switch (action.type) {
-        case ADD_NEWS:
-                return {label: state.label * action.payload};
-        default:
-            return state
-    }
+    return handler ? handler(state, action) : state
 }

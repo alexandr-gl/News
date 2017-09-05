@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { myFunction } from '../modules/content'
+import { getNews } from '../modules/content'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -14,11 +14,11 @@ import Content from '../components/Content'
 
 const mapDispatchToProps = {
     //number : () => myFunction(1)
-    myFunction: () => myFunction()
+    getNews: () => getNews()
 }
 
 const mapStateToProps = (state) => ({
-    state: state.content.label
+    data: state.content.data
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

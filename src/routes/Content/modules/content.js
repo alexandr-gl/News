@@ -1,52 +1,62 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const MULTIPLY_NUMBER = 'MULTIPLY_NUMBER';
+export const GET_NEWS = 'GET_NEWS';
+
+import axios from 'axios';
 
 /*
  * другие константы
  */
 
 export const actions = {
-    myFunction
+    getNews
 }
 
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function myFunction(value = 2) {
-    return (dispatch) => {
-        dispatch({
-            type: MULTIPLY_NUMBER,
-            payload: value,
-        })
-    }
-    //return state
-    //return initialState
+export function getNews() {
+    return (dispatch, getState) => {
+        return axios.get('/qqz')
+            .then(function (response) {
+                console.log('response-- ', response.data);
+                dispatch({
+                    type    : GET_NEWS,
+                    payload : response.data,
+                })
+            })
+            .catch(function (error) {
+                console.log('Request faild', error)
+            })
+}
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
-// export const ACTION_HANDLERS = {
-//     MULTIPLY_NUMBER : (state, action) => state.label * action.payload
-// }
+export const ACTION_HANDLERS = {
+    //GET_NEWS : (state, action) => {return {label: state.label * action.payload}}
+    GET_NEWS : (state, action) => Object.assign({}, state, {
+        data: action.payload,
+    })
+}
 
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {label: 1};
+//const initialState = {label: 100500};
+const initialState = {data: []};
 export default function counterReducer (state = initialState, action) {
-    // const handler = ACTION_HANDLERS[action.type]
-    //
-    // return handler ? handler(state, action) : state
+    const handler = ACTION_HANDLERS[action.type]
+    return handler ? handler(state, action) : state
 
-    switch (action.type) {
-        case MULTIPLY_NUMBER:
-                return {label: state.label * action.payload};
-        default:
-            return state
-    }
+    // switch (action.type) {
+    //     case MULTIPLY_NUMBER:
+    //             return {label: state.label * action.payload};
+    //     default:
+    //         return state
+    // }
 }

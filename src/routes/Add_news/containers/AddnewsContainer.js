@@ -6,7 +6,7 @@ import { addNews } from '../modules/addnews'
     wiring in the actions and state necessary to render a presentational
     component - in this case, the counter:   */
 
-import Content from '../components/Addnews'
+import Addnews from '../components/Addnews'
 
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are

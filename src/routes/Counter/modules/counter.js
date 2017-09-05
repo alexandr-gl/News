@@ -32,6 +32,32 @@ export const doubleAsync = () => {
   }
 }
 
+
+
+
+export const qqzFunction = () => {
+    return (dispatch, getState) => {
+        return axios.get('/user?ID=12345')
+            .then(function (response) {
+                dispatch({
+                    type    : DONE,
+                    payload : response
+                })
+            })
+            .catch(function (error) {
+                dispatch({
+                    type    : ERROR_ACTION,
+                    payload : error
+                })
+            });
+    }
+}
+
+
+
+
+
+
 export const actions = {
   increment,
   doubleAsync
