@@ -5,12 +5,17 @@ const logger = require('../build/lib/logger')
 const webpackConfig = require('../build/webpack.config')
 const project = require('../project.config')
 const compress = require('compression')
+const bodyParser = require('body-parser')
 var mongoose = require('mongoose');
 var modelNews = require('../server/model');
+var news = require('./routes/news')
+
 
 const app = express()
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compress())
-
+app.use('/news', news);
 // ------------------------------------
 // Apply Webpack HMR Middleware
 // ------------------------------------
@@ -41,22 +46,6 @@ if (project.env === 'development') {
         useMongoClient: true
     });
 
-    app.get('/qqz', function(req, res) {
-        return modelNews.find(function (err, result) {
-            if (err || !result) {
-                return res.send({error: 'Tasks wasnt got'});
-            }
-
-            res.send(result);
-        });
-        // modelNews.create({text: 'dahjfh', author: 'Vasya', topic: 'shit'}, function (err, result) {
-        //     if(err || !result){
-        //         return res.send({error: 'Tasks not uploaded'});
-        //     }
-        //     res.send(result);
-        //     console.log(result);
-        // });
-    });
 
 
 

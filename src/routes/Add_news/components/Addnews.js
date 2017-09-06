@@ -27,15 +27,19 @@ import {addNews} from "../modules/addnews";
 export class Addnews extends React.Component {
     constructor (props) {
         super(props)
-        //this.myFunction = this.myFunction.bind(this);
          this.state = {
-            value: 'fjahwefajiwhfji'
+            author: '',
+             topic: '',
+             news_text: '',
+             tags: ''
              }
 
-        this.press = this.press.bind(this)
+        this.makeNews = this.makeNews.bind(this);
+        this.press = this.press.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     componentDidMount () {
-        //this.props.getUser()
+        console.log('this.props.something-- ',this.props )
     }
     handleChangeEmail (event) {
         //this.setState({ email: event.target.value })
@@ -48,22 +52,42 @@ export class Addnews extends React.Component {
         // let formData = Object.assign({}, this.state)
     }
 
+    handleChange(type,event) {
+        event.preventDefault()
+        this.setState({[type]: event.target.value})
+
+    }
+
     press () {
-        this.props.addNews();
-        console.log('this.props.state-- ', this.props.state);
-        //setState({label: this.props.state})
+        this.makeNews();
+    }
+
+    makeNews(event) {
+        event.preventDefault();
+        this.props.addNews(this.state);
+        this.setState({
+            news_text: '',
+            tags: '',
+            topic: '',
+            author: ''
+        })
     }
 
     render () {
         return (
-            <div>
-                <button onClick={this.press}>Add news</button>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Name:
-                        <textarea value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
+            <div className="add-news">
+                <form className="add-news__form" onSubmit={this.makeNews}>
+
+                    <input value={this.state.author} placeholder="Write your name" onChange={this.handleChange.bind(this, 'author')}/>
+
+                    <input value={this.state.topic} placeholder="Write tittle" onChange={this.handleChange.bind(this, 'topic')}/>
+
+                    <textarea value={this.state.news_text} className="form__add-text" placeholder="Add news text here"
+                              maxLength='256' onChange={this.handleChange.bind(this, 'news_text')}/>
+
+                    <input value={this.state.tags} placeholder="Write tags" onChange={this.handleChange.bind(this, 'tags')}/>
+
+                    <input type="submit" value="Add news"/>
                 </form>
             </div>
         )

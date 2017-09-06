@@ -13,12 +13,12 @@ import Addnews from '../components/Addnews'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-    //number : () => myFunction(1)
-    addNews: () => addNews()
+    addNews
+
 }
 
 const mapStateToProps = (state) => ({
-    state: state.content.label
+    something: state.somekey.something
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

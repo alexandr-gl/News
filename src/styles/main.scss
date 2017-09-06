@@ -24,5 +24,28 @@ body {
 {
   background-color: aquamarine;
   border: 2px solid black;
+  text-align: left;
 }
+
+.form__add-text
+{
+  width: 800px;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.add-news__form
+{
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+}
+
+.add-news__form input
+{
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+
 

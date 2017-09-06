@@ -10,7 +10,7 @@ export const PageLayout = ({ children }) => (
     {' · '}
     <Link to='/counter' activeClassName='page-layout__nav-item--active'>Counter</Link>
       <Link to='/content' activeClassName='page-layout__nav-item--active'>Content</Link>
-      <Link to='/addnews' activeClassName='page-layout__nav-item--active'> Add News </Link>
+      <Link to='/somekey' activeClassName='page-layout__nav-item--active'> Add News </Link>
     <div className='page-layout__viewport'>
       {children}
     </div>

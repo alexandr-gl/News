@@ -72,6 +72,8 @@ export const List  = props => {
             <div className="news__tittle"><h1>Tittle: {obj.topic}</h1></div>
             <div className="news__author"><h4>Author: {obj.author}</h4></div>
             <div className="news__text">Text: {obj.text}</div>
+            <div className="news__img"></div>
+            <div className="news__tags"></div>
 
             {/*<h2 className="news__author-name">Author: {props.userInfo.nickname}</h2>*/}
             {/*<img className="news__author-img" href="#"/>*/}

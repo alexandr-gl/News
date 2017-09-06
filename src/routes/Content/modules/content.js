@@ -19,16 +19,17 @@ export const actions = {
 // ------------------------------------
 export function getNews() {
     return (dispatch, getState) => {
-        return axios.get('/qqz')
+            return axios.get('/news/getnews')
             .then(function (response) {
                 console.log('response-- ', response.data);
+                console.log('easy', []==![]);
                 dispatch({
                     type    : GET_NEWS,
                     payload : response.data,
                 })
             })
             .catch(function (error) {
-                console.log('Request faild', error)
+                console.log('Request failed', error)
             })
 }
 }
