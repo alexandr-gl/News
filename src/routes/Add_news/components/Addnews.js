@@ -30,7 +30,7 @@ export class Addnews extends React.Component {
          this.state = {
             author: '',
              topic: '',
-             news_text: '',
+             newstext: '',
              tags: ''
              }
 
@@ -66,7 +66,7 @@ export class Addnews extends React.Component {
         event.preventDefault();
         this.props.addNews(this.state);
         this.setState({
-            news_text: '',
+            newstext: '',
             tags: '',
             topic: '',
             author: ''
@@ -82,8 +82,8 @@ export class Addnews extends React.Component {
 
                     <input value={this.state.topic} placeholder="Write tittle" onChange={this.handleChange.bind(this, 'topic')}/>
 
-                    <textarea value={this.state.news_text} className="form__add-text" placeholder="Add news text here"
-                              maxLength='256' onChange={this.handleChange.bind(this, 'news_text')}/>
+                    <textarea value={this.state.newstext} className="form__add-text" placeholder="Add news text here"
+                              maxLength='256' onChange={this.handleChange.bind(this, 'newstext')}/>
 
                     <input value={this.state.tags} placeholder="Write tags" onChange={this.handleChange.bind(this, 'tags')}/>
 

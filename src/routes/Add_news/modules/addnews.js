@@ -27,7 +27,7 @@ export function addNews(data) {
         //     author: data.author
         // })
         return axios.post('/news', {
-            news_text: data.news_text,
+            newstext: data.newstext,
                 tags: data.tags,
                 topic: data.topic,
                 author: data.author})

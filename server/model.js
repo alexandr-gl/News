@@ -1,7 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var newsSchema = new mongoose.Schema( {
-    text: String,
+    newstext: String,
     author: String,
     topic: String,
     tags: String

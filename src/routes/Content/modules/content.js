@@ -17,15 +17,14 @@ export const actions = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function getNews() {
+export function getNews(searchData) {
     return (dispatch, getState) => {
             return axios.get('/news/getnews')
             .then(function (response) {
                 console.log('response-- ', response.data);
-                console.log('easy', []==![]);
                 dispatch({
                     type    : GET_NEWS,
-                    payload : response.data,
+                    payload : response.data
                 })
             })
             .catch(function (error) {
@@ -48,16 +47,8 @@ export const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-//const initialState = {label: 100500};
 const initialState = {data: []};
 export default function counterReducer (state = initialState, action) {
     const handler = ACTION_HANDLERS[action.type]
     return handler ? handler(state, action) : state
-
-    // switch (action.type) {
-    //     case MULTIPLY_NUMBER:
-    //             return {label: state.label * action.payload};
-    //     default:
-    //         return state
-    // }
 }
