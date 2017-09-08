@@ -17,7 +17,7 @@ export const actions = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function getNews(searchData) {
+export function getNews() {
     return (dispatch, getState) => {
             return axios.get('/news/getnews')
             .then(function (response) {

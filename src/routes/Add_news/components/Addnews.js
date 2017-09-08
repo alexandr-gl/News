@@ -41,6 +41,10 @@ export class Addnews extends React.Component {
     componentDidMount () {
         console.log('this.props.something-- ',this.props )
     }
+
+    // componentWillMount () {
+    //     this.splitTags();
+    // }
     handleChangeEmail (event) {
         //this.setState({ email: event.target.value })
     }

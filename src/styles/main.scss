@@ -20,12 +20,28 @@ body {
   box-sizing: inherit;
 }
 
+
 .news
 {
-  background-color: aquamarine;
-  border: 2px solid black;
-  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
+.news__li
+{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: grey;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  padding: 10px 10px 10px 10px;
+}
+ .news__search
+ {
+   margin-bottom: 10px;
+ }
 
 .form__add-text
 {
@@ -45,6 +61,20 @@ body {
 {
   width: 200px;
   margin-bottom: 10px;
+}
+
+.newstags
+{
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+.news__li-tags
+{
+  list-style: none;
+  background-color: darkseagreen;
+  margin-bottom: 3px;
+  border-radius: 10px;
 }
 
 

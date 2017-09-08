@@ -7,51 +7,53 @@ export class Content extends React.Component {
     constructor (props) {
         super(props)
         this.state = {search: ''}
-    this.press = this.press.bind(this);
+    //this.press = this.press.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        //this.handleClick = this.handleClick.bind(this);
+    }
+
+    componentDidMount () {
+        this.props.getNews();
     }
 
 
-    handleChange(type,event) {
+    handleChange(type, event) {
         event.preventDefault()
         this.setState({[type]: event.target.value})
-
     }
-
-
-    press () {
-        this.props.getNews('all');
-}
-
 
     render() {
+        var libraries = this.props.data;
+        let searchString = this.state.search.trim().toLowerCase();
+        if(searchString.length > 0){
+            libraries = libraries.filter(function (news) {
+                let str = news.topic + news.newstext + news.author;
+                return str.match(searchString);
+            });
+        }
+        // libraries.map(function(news, index){
+        //     console.log('news.tags-- ', news.tags);
+        // })
         return (
-            <div>
-                <button onClick={this.press}>Press</button> <br />
-                <input value={this.state.search} placeholder="Search" onChange={this.handleChange.bind(this, 'search')}/>
-                <button onClick={this.pressSearch}> Search </button>
-                <List something={this.props.data}/>
+            <div className="news">
+                <div>
+                <input className="news__search" value={this.state.search} placeholder="Search" onChange={this.handleChange.bind(this, 'search')}/>
+                {libraries.map(function(news, index){
+                    return <li  className="news__li" key={index}>
+                        <span><h1>{news.topic}</h1></span><br />
+                        <span>{news.newstext}</span><br />
+                        <span>Author: {news.author}</span>
+                        <span>Tags: {news.tags}</span>
+                    </li>
+                })}
+                </div>
+                <div className="newstags">
+                    {libraries.map(function(news, index) {
+                        return <li  className="news__li-tags" key={index}>{news.tags}</li>
+                    })}
+            </div>
             </div>
         )
     }
 }
-
-
-export const List  = props => {
-    const list = props.something.map((obj, item) =>{
-        return <div key={item} className="news">
-            <div className="news__tittle"><h1>Tittle: {obj.topic}</h1></div>
-            <div className="news__author"><h4>Author: {obj.author}</h4></div>
-            <div className="news__text">Text: {obj.newstext}</div>
-            <div className="news__img"></div>
-            <div className="news__tags"></div>
-        </div>
-    });
-        return (
-            <div>
-                <ul>{list}</ul>
-            </div>
-        )
-};
-
 export default Content

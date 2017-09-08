@@ -15,7 +15,7 @@ router.post('/', function(req, res) {
 
 //GET users listing.
 router.get('/getnews/', function(req, res) {
-    console.log('req.body', req.body);
+    console.log('req.body+++', req.body);
     return modelNews.find(function (err, result) {
         if (err || !result) {
             return res.send({error: 'Tasks wasnt got'});
