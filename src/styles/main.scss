@@ -26,6 +26,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  max-width: 800px;
 }
 .news__li
 {
@@ -67,14 +68,16 @@ body {
 {
   margin-top: 40px;
   margin-left: 20px;
+  text-align: left;
 }
 
 .news__li-tags
 {
-  list-style: none;
-  background-color: darkseagreen;
+  background-color: cadetblue;
   margin-bottom: 3px;
-  border-radius: 10px;
+  border-radius: 3px;
+  display: inline;
+  margin-right: 3px;
 }
 
 

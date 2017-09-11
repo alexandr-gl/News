@@ -1,29 +1,6 @@
 import React from 'react'
 import {addNews} from "../modules/addnews";
 
-// class Addnews extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             value: 'Please write an essay about your favorite DOM element.'
-//         };
-//
-//         this.handleChange = this.handleChange.bind(this);
-//         this.handleSubmit = this.handleSubmit.bind(this);
-//     }
-//
-//     handleChange(event) {
-//         this.setState({value: event.target.value});
-//     }
-//
-//     handleSubmit(event) {
-//         alert('An essay was submitted: ' + this.state.value);
-//         event.preventDefault();
-//     }
-//     render(){return(<teaxtarea rows="10" cols="45" name="text"  value={this.state.value}>akrjakjfrkaj</teaxtarea>)}
-// }
-
-
 export class Addnews extends React.Component {
     constructor (props) {
         super(props)
