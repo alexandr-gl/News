@@ -18,30 +18,53 @@ export const ADD_NEWS = 'ADD_NEWS';
 // Actions
 // ------------------------------------
 export function addNews(data) {
-    // console.log('data-- ', data)
+    console.log('data-- ', data)
+    let formData = new FormData("fileinfo");
+    formData.append('file', data.file);
+    formData.append("author", data.author)
+    formData.append("topic", data.topic)
+    formData.append("newstext", data.newstext)
+    formData.append("tags", data.tags)
+    formData.append("file", data.file)
+
+    for (let [key, value] of formData.entries()) {
+        console.log('-------', key, value);
+    }
+    //console.log('formData.author++ ', formData)
+    //formData.append("image", data);
     return (dispatch) => {
-        // return axios.post('/qqz', {
-        //     news_text: data.news_text,
-        //     tags: data.tags,
-        //     topic: data.topic,
-        //     author: data.author
-        // })
-        return axios.post('/news', {
+        axios.post('/news', formData,
+        {
+            // headers: {
+            //     'Content-Type'
+            // :
+            //     'multipart/form-data'
+            // }
+            author: data.author,
+            topic: data.topic,
             newstext: data.newstext,
-                tags: data.tags,
-                topic: data.topic,
-                author: data.author})
-            .then(function (response) {
-                console.log('response from server-------------', response.data);
-                dispatch({
-                    type:ADD_NEWS,
-                    payload:response.data
-                })
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-}}
+            tags: data.tags,
+            file: formData
+        })}
+
+        // return axios.post('/news', data)
+        // // return axios.post('/news', {
+        // //     newstext: data.newstext,
+        // //         tags: data.tags,
+        // //         topic: data.topic,
+        // //         author: data.author,
+        // //         file: data.file})
+        //     .then(function (response) {
+        //         console.log('response from server-------------', response.data);
+        //         dispatch({
+        //             type:ADD_NEWS,
+        //             payload:response.data
+        //         })
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+}
 
 
 export const actions = {

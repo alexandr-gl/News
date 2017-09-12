@@ -6,7 +6,7 @@ import {getNews} from "../modules/content";
 export class Content extends React.Component {
     constructor (props) {
         super(props)
-        this.state = {search: '', tag: '', numPage: ''}
+        this.state = {search: '', tag: '', numPage: 0}
     //this.press = this.press.bind(this);
         this.handleChange = this.handleChange.bind(this);
         //this.pagination = this.pagination.bind(this);
@@ -18,7 +18,10 @@ export class Content extends React.Component {
     componentDidMount () {
         this.props.getNews();
     }
-
+    handleClickDropFilter()
+    {
+        this.setState({tag: ''});
+    }
 
     handleChange(type, event) {
         event.preventDefault()
@@ -39,30 +42,25 @@ export class Content extends React.Component {
 
 
     pagination (numPages) {
-        console.log('numPages-- ', numPages)
         this.myArray=[];
 
         for(let i = 0; i<numPages; i++)
         {
-            // console.log('i-- ', i)
             this.myArray.push( <button key={i} className="pagination__pages" onClick={this.handleClickPages.bind(this, i)} >{i+1}</button>)
-            //
         }
         console.log('this.myArray-- ', this.myArray)
     }
-    // }
 
     render() {
-        console.log('---1-- ', this.myArray)
         let libraries = this.props.data;
         let searchString = this.state.search.trim().toLowerCase();
         let searchTags = this.state.tag.trim().toLowerCase();
-
+        let firstNews = this.state.numPage + 2 * this.state.numPage;
+        let lastNews = firstNews + 3;
         // приведение тегов из бд к виду подходящему для обработки
         var lbtags = libraries.map(function(news) {
             return news.tags.split(' ');
         });
-        console.log('lbtags-- ', lbtags)
 
         //уникальность тегов
             var obj = {};
@@ -96,16 +94,12 @@ export class Content extends React.Component {
         {
             pages = libraries.length/3;
         }
-        else 
+        else
         {
             pages = Math.trunc(libraries.length/3) + 1;
         }
+        libraries = libraries.slice(firstNews, lastNews);
 
-        // this.pagination(6)
-        console.log('pages-- ', pages)
-        for (let i = 0; i<pages; i++) {
-
-        }
         return (
             <div className="news">
                 <div>
@@ -123,6 +117,7 @@ export class Content extends React.Component {
                     {lbtags.map(function(lbtags, index) {
                             return <input key={index} type="submit" value={lbtags} className="news__li-tags" onClick={Content.handleClick.bind(this, lbtags)}></input>
                     })}
+                    <input value='Drop filter' type="submit" className="news__li-tags-drop" onClick={this.handleClickDropFilter.bind(this, 'drop')}></input>
                 </div>
                 <div className="pagination">{this.pagination(pages)}</div>
                 {this.myArray.map((itm)=>{return itm})}
