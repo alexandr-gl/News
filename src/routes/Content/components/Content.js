@@ -6,17 +6,17 @@ import {getNews} from "../modules/content";
 export class Content extends React.Component {
     constructor (props) {
         super(props)
-        this.state = {search: '', tag: '', numPage: 0}
+        this.state = {search: '', tag: '', numPage: 0, path:''}
     //this.press = this.press.bind(this);
         this.handleChange = this.handleChange.bind(this);
         //this.pagination = this.pagination.bind(this);
         Content.handleClick = Content.handleClick.bind(this);
         this.myArray=[];
-
     }
 
     componentDidMount () {
         this.props.getNews();
+
     }
     handleClickDropFilter()
     {
@@ -27,7 +27,6 @@ export class Content extends React.Component {
         event.preventDefault()
         this.setState({[type]: event.target.value})
     }
-
     static handleClick(e) {
         this.setState({tag: e});
     }
@@ -52,7 +51,9 @@ export class Content extends React.Component {
     }
 
     render() {
+        console.log('this.state.tag-- ', this.state.tag);
         let libraries = this.props.data;
+        console.log('this.props.data-- ', this.props.data)
         let searchString = this.state.search.trim().toLowerCase();
         let searchTags = this.state.tag.trim().toLowerCase();
         let firstNews = this.state.numPage + 2 * this.state.numPage;
@@ -61,7 +62,6 @@ export class Content extends React.Component {
         var lbtags = libraries.map(function(news) {
             return news.tags.split(' ');
         });
-
         //уникальность тегов
             var obj = {};
             for (let j = 0; j < libraries.length; j++) {
@@ -99,17 +99,22 @@ export class Content extends React.Component {
             pages = Math.trunc(libraries.length/3) + 1;
         }
         libraries = libraries.slice(firstNews, lastNews);
-
         return (
             <div className="news">
+                <img style={{height:'100px'}} src="/favicon.ico" alt="asdfasdfa"/>
                 <div>
                 <input className="news__search" value={this.state.search} placeholder="Search" onChange={this.handleChange.bind(this, 'search')}/>
                 {libraries.map(function(news, index){
+                    const a='/Wed Sep 13 2017 17:05:26 GMT+0300 (MSK)-1111111.jpg'
+                    console.log('a-- ', a);
+                    console.log('news.file-- ', news.file)
                     return <li  className="news__li" key={index}>
+                        console.log('news.file-- ', news.file)
                         <span><h1>{news.topic}</h1></span><br />
                         <span>{news.newstext}</span><br />
                         <span>Author: {news.author}</span>
                         <span>Tags: {news.tags}</span>
+                        <img src={news.file} />
                     </li>
                 })}
                 </div>

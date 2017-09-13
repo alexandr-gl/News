@@ -20,7 +20,6 @@ export const ADD_NEWS = 'ADD_NEWS';
 export function addNews(data) {
     console.log('data-- ', data)
     let formData = new FormData("fileinfo");
-    formData.append('file', data.file);
     formData.append("author", data.author)
     formData.append("topic", data.topic)
     formData.append("newstext", data.newstext)
@@ -30,23 +29,26 @@ export function addNews(data) {
     for (let [key, value] of formData.entries()) {
         console.log('-------', key, value);
     }
-    //console.log('formData.author++ ', formData)
-    //formData.append("image", data);
+    console.log('formData-- ', formData)
     return (dispatch) => {
-        axios.post('/news', formData,
-        {
-            // headers: {
-            //     'Content-Type'
-            // :
-            //     'multipart/form-data'
-            // }
-            author: data.author,
-            topic: data.topic,
-            newstext: data.newstext,
-            tags: data.tags,
-            file: formData
-        })}
-
+        axios.post('/news', formData)
+            .then(function (response) {
+                console.log('response from server-------------', response.data);
+                dispatch({
+                    type: ADD_NEWS,
+                    payload: response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+        // obj: {
+            // author: data.author,
+            // topic: data.topic,
+            // newstext: data.newstext,
+            // tags: data.tags,
+            // file: formData}
         // return axios.post('/news', data)
         // // return axios.post('/news', {
         // //     newstext: data.newstext,

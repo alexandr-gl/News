@@ -45,7 +45,7 @@ export class Addnews extends React.Component {
 
     makeNews(event) {
         event.preventDefault();
-        this.state.file = this.refs.fileInput
+        // this.state.file = this.refs.fileInput
         // let formData = new FormData("fileinfo");
         // formData.append("author", this.state.author)
         // formData.append("topic", this.state.topic)
@@ -82,7 +82,7 @@ export class Addnews extends React.Component {
                     <input value={this.state.topic} name="topic" placeholder="Write tittle" onChange={this.handleChange.bind(this, 'topic')}/>
 
                     <textarea value={this.state.newstext} name="newstext" className="form__add-text" placeholder="Add news text here"
-                              maxLength='256' onChange={this.handleChange.bind(this, 'newstext')}/>
+                              maxLength='4000' onChange={this.handleChange.bind(this, 'newstext')}/>
 
                     <input value={this.state.tags} name="tags" placeholder="Write tags" onChange={this.handleChange.bind(this, 'tags')}/>
 
