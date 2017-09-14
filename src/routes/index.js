@@ -4,7 +4,7 @@ import Home from './Home'
 import Content from './Content'
 import CounterRoute from './Counter'
 import Somekey from './Add_news'
-
+import Auth from './Auth'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -16,7 +16,8 @@ export const createRoutes = (store) => ({
   childRoutes : [
       CounterRoute(store),
       Content(store),
-      Somekey(store)
+      Somekey(store),
+      Auth(store)
   ]
 })
 

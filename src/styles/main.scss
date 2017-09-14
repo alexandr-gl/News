@@ -26,8 +26,13 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  max-width: 800px;
+  max-width: 1100px;
 }
+.newscontent
+{
+    float: left;
+}
+
 .news__li
 {
   list-style: none;
@@ -38,6 +43,7 @@ body {
   border-radius: 20px;
   margin-bottom: 10px;
   padding: 10px 10px 10px 10px;
+  width: 800px;
 }
  .news__search
  {
@@ -69,6 +75,7 @@ body {
   margin-top: 40px;
   margin-left: 20px;
   text-align: left;
+  float:left;
 }
 
 .news__li-tags
