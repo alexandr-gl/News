@@ -3,7 +3,7 @@ var multer  = require('multer');
 //var upload = multer()
 // var modelTask = require('');
 var router = express.Router();
-const modelNews = require('../model');
+const modelNews = require('../models/model');
 
 
 

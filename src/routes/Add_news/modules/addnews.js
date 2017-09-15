@@ -18,7 +18,6 @@ export const ADD_NEWS = 'ADD_NEWS';
 // Actions
 // ------------------------------------
 export function addNews(data) {
-    console.log('data-- ', data)
     let formData = new FormData("fileinfo");
     formData.append("author", data.author)
     formData.append("topic", data.topic)
@@ -43,29 +42,7 @@ export function addNews(data) {
                 console.log(error);
             });
     }
-        // obj: {
-            // author: data.author,
-            // topic: data.topic,
-            // newstext: data.newstext,
-            // tags: data.tags,
-            // file: formData}
-        // return axios.post('/news', data)
-        // // return axios.post('/news', {
-        // //     newstext: data.newstext,
-        // //         tags: data.tags,
-        // //         topic: data.topic,
-        // //         author: data.author,
-        // //         file: data.file})
-        //     .then(function (response) {
-        //         console.log('response from server-------------', response.data);
-        //         dispatch({
-        //             type:ADD_NEWS,
-        //             payload:response.data
-        //         })
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+
 }
 
 
