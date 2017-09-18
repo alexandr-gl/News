@@ -46,16 +46,17 @@ export class Auth extends React.Component {
     }
 
     render () {
-        console.log('this.state222-- ', this.state)
-        let shit;
+        //console.log('this.state222-- ', this.state)
         let obj = {username: this.handleChange.bind(this, 'username'),
                     email: this.handleChange.bind(this, 'email'),
                     password: this.handleChange.bind(this, 'password'),
                     kek: this.registerUser.bind(this),
-                    lol: this.press.bind(this)}
+                    //lol: this.press.bind(this)
+                    }
+        let registerform;
         if(this.state.page == 'login')
-        { shit = <Registerform props={this.state} change={obj}/>;}
-        else if (this.state.page == 'signup') {shit = <Signupform props={this.state}/>;}
+        { registerform = <Registerform props={this.state} change={obj}/>;}
+        else if (this.state.page == 'signup') {shit = <Signupform props={this.state} change={obj}/>;}
         //return <EmailSignUpForm />;
         return(<div className="container">
 
@@ -65,9 +66,8 @@ export class Auth extends React.Component {
                 <p>Login or Register with:</p>
                 <input type="submit" value="Log in" onClick={this.select.bind(this, 'login')}/>
                 <input type="submit" value="Sign up" onClick={this.select.bind(this, 'signup')}/>
-                {shit}
             </div>
-
+            {registerform}
         </div>)
 
     }

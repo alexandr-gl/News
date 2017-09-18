@@ -17,6 +17,7 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 
+require('./passport')(passport); // pass passport for configuration
 
 const app = express();
 app.use(morgan('dev')); // log every request to the console
@@ -24,8 +25,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compress());
-app.use('/news', news);
-app.use('/users', users)
+
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
@@ -34,6 +34,9 @@ app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secre
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+
+app.use('/news', news);
+app.use('/users', users)
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
