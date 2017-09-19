@@ -30,7 +30,6 @@ router.get('/login', function(req, res) {
 router.get('/signup', function(req, res) {
 
     // render the page and pass in any flash data if it exists
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
 });
 
 // process the signup form
@@ -55,14 +54,19 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-// process the signup form
-router.post('/', passport.authenticate('local-signup', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+//process the signup form
+router.post('/', passport.authenticate('local-signup'))
+// router.post('/', passport.authenticate('local-signup'), function(req, res) {
+//     console.log('error-- ', error);
+//     // modelNews.create(req.body, function (err, result) {
+//     //     if(err || !result){
+//     //         return res.send({error: 'Tasks not uploaded'});
+//     //     }
+//     //     res.send(result);
+//     // });
+// });
 
-}
-), function() {console.log('req.body-- ', req.body)});
+
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
@@ -74,6 +78,13 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+
+// process the login form
+router.post('/login', passport.authenticate('local-login'), function() {
+    res.send({
+        user : req.user // get the user out of session and pass to template
+    });
+    });
 
 
 module.exports = router;

@@ -36,16 +36,8 @@ var storage = multer.diskStorage({
 })
 var upload = multer({storage: storage});
 
-router.post('/',upload.single('file'), function(req, res) {
-    //const file = req.file;
-    //form.parse(req);
-    // console.log('req.body-- ', req.body);
-    // console.log('req.file-- ', req.file);
-    console.log('req', req.file.path);
+router.post('/', upload.single('file'), function(req, res) {
     req.body.file = '/' + req.file.path.substr(7)
-    console.log('req.body.file-- ', req.body.file)
-    //console.log(__dirname)
-    console.log('req.body-- ', req.body);
     modelNews.create(req.body, function (err, result) {
         if(err || !result){
             return res.send({error: 'Tasks not uploaded'});
