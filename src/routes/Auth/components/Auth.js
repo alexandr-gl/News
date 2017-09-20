@@ -1,5 +1,5 @@
 import React from 'react'
-import {addUser, loginUser} from "../modules/auth";
+import {addUser, loginUser, getInfo} from "../modules/auth";
 
 export class Auth extends React.Component {
     constructor (props) {
@@ -13,8 +13,7 @@ export class Auth extends React.Component {
 
     }
     componentDidMount () {
-        console.log('this.state-- ', this.state)
-        console.log('this.props-- ', this.props)
+        console.log('this.props.data-- ', this.props.data)
     }
 
     // componentWillMount () {
@@ -47,19 +46,36 @@ export class Auth extends React.Component {
         this.props.loginUser(this.state);
     }
 
+    // logout(event){
+    //     event.preventDefault();
+    //     this.props.logOut();
+    // }
+
     press(){
         console.log('1-- ', 1)
     }
 
     render () {
-        //console.log('this.state222-- ', this.state)
-        console.log('this.props.data-- ', this.props.data);
+        console.log('this.props-- ', this.props);
         let obj = {username: this.handleChange.bind(this, 'username'),
                     email: this.handleChange.bind(this, 'email'),
                     password: this.handleChange.bind(this, 'password'),
                     reg: this.registerUser.bind(this),
-                    log: this.logUser.bind(this)
+                    log: this.logUser.bind(this),
+                    // logout: this.logout.bind(this)
                     }
+
+        let userInfo;
+        if(this.props.data === 'error login')
+        {
+            userInfo = 'Erorr!!!'
+        }
+        else if(this.props.data === undefined)
+        {
+            userInfo = 'Login or signup'
+        }
+        else {userInfo = <Userinfo props={this.props} />}
+
         let registerform;
         if(this.state.page == 'login')
         { registerform = <Registerform props={this.state} change={obj}/>;}
@@ -71,9 +87,9 @@ export class Auth extends React.Component {
                 <h1><span className="fa fa-lock"></span> Node Authentication</h1>
 
                 <p>Login or Register with:</p>
-                <input type="submit" value="Sign up" onClick={this.select.bind(this, 'login')}/>
+                <input type="submit" value="Sign up" onClick={this.select.bind(this, 'login')} />
                 <input type="submit" value="Login" onClick={this.select.bind(this, 'signup')}/>
-                <input type="submit" value="Logout"/>
+                {userInfo}
             </div>
             {registerform}
         </div>)
@@ -99,12 +115,22 @@ function Registerform(props) {
 function Loginform(props) {
     return(
         <form className="add-news__form" onSubmit={props.change.log} name="loginuser">
-            <input onChange={props.change.username} name="author" placeholder="Write your name"/>
+            <input onChange={props.change.email} name="author" placeholder="Write your email"/>
 
             <input onChange={props.change.password} name="author" placeholder="Write your password" />
 
             <input type="submit" value="Login"/>
         </form>
+    )
+}
+
+function Userinfo(props) {
+    return(
+        <div>
+            <span>Email: {props.props.data.email}</span> <br />
+            <span>UserID:{props.props.data.id}</span> <br />
+            {/*<input value="Logout" type="button" onClick={props.change.logout}/>*/}
+        </div>
     )
 }
 

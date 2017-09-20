@@ -2,49 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 const modelUsers = require('../models/modelusers');
-
-// =====================================
-// HOME PAGE (with login links) ========
-// =====================================
-router.get('/', function(req, res) {
-    res.render('index.ejs'); // load the index.ejs file
-});
-
-// =====================================
-// LOGIN ===============================
-// =====================================
-// show the login form
-router.get('/login', function(req, res) {
-
-    // render the page and pass in any flash data if it exists
-    res.render('login.ejs', { message: req.flash('loginMessage') });
-});
-
-// process the login form
-// app.post('/login', do all our passport stuff here);
-
-// =====================================
-// SIGNUP ==============================
-// =====================================
-// show the signup form
-router.get('/signup', function(req, res) {
-
-    // render the page and pass in any flash data if it exists
-});
-
-// process the signup form
-// app.post('/signup', do all our passport stuff here);
-
-// =====================================
-// PROFILE SECTION =====================
-// =====================================
-// we will want this protected so you have to be logged in to visit
-// we will use route middleware to verify this (the isLoggedIn function)
-router.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.ejs', {
-        user : req.user // get the user out of session and pass to template
-    });
-});
+const jwt = require('jsonwebtoken'); // аутентификация по JWT для hhtp
+const jwtsecret = "mysecretkey"; // ключ для подписи JWT
 
 // =====================================
 // LOGOUT ==============================
@@ -55,16 +14,14 @@ router.get('/logout', function(req, res) {
 });
 
 //process the signup form
-router.post('/', passport.authenticate('local-signup'))
-// router.post('/', passport.authenticate('local-signup'), function(req, res) {
-//     console.log('error-- ', error);
-//     // modelNews.create(req.body, function (err, result) {
-//     //     if(err || !result){
-//     //         return res.send({error: 'Tasks not uploaded'});
-//     //     }
-//     //     res.send(result);
-//     // });
-// });
+router.post('/', passport.authenticate('local-signup'), function(req, res){
+        console.log('req-- ', req);
+        console.log('authInfo-- ', req.authInfo);
+       //   if  (err || !result){
+       //       return res.send({req.authInfo: 'Tasks not uploaded'});
+       //   }
+       // res.send(result);
+});
 
 
 
@@ -80,9 +37,17 @@ function isLoggedIn(req, res, next) {
 }
 
 // process the login form
-router.post('/login', passport.authenticate('local-login'), function() {
+router.post('/login',  passport.authenticate('local-login'), function(req, res) {
+    console.log('777777-- ', 777777)
+    const payload = {
+        id: req.user._id,
+        email: req.user.local.email,
+        password: req.user.local.password
+    };
+    console.log('payload-- ', payload)
+    const token = jwt.sign(payload, jwtsecret);
     res.send({
-        user : req.user // get the user out of session and pass to template
+        user : token // get the user out of session and pass to template
     });
     });
 
