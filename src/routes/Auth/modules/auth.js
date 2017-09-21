@@ -68,21 +68,21 @@ export function getInfo() {
     }
 }
 
-// export function logOut() {
-//     return (dispatch) => {
-//         return axios.get('/users/logout')
-//             .then(function (response) {
-//                 console.log('response-- ', response.data);
-//                 dispatch({
-//                     type    : LOG_OUT,
-//                     payload : response.data
-//                 })
-//             })
-//             .catch(function (error) {
-//                 console.log('Request failed', error)
-//             })
-//     }
-// }
+export function logOut() {
+    return (dispatch) => {
+        return axios.get('/users/logout')
+            .then(function (response) {
+                console.log('response-- ', response.data);
+                dispatch({
+                    type    : LOG_OUT,
+                    payload : response.data
+                })
+            })
+            .catch(function (error) {
+                console.log('Request failed', error)
+            })
+    }
+}
 
 export const actions = {
     addUser, loginUser, getInfo

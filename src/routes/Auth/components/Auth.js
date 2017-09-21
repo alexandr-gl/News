@@ -1,5 +1,5 @@
 import React from 'react'
-import {addUser, loginUser, getInfo} from "../modules/auth";
+import {addUser, loginUser, getInfo, logOut} from "../modules/auth";
 
 export class Auth extends React.Component {
     constructor (props) {
@@ -10,10 +10,25 @@ export class Auth extends React.Component {
              email: '',
              password: '',
              }
-
     }
+
+    static authenticateUser(token) {
+        localStorage.setItem('token', token);
+    }
+    static isUserAuthenticated() {
+        return localStorage.getItem('token') !== null;
+    }
+    static deauthenticateUser() {
+        localStorage.removeItem('token');
+    }
+    static getToken() {
+        return localStorage.getItem('token');
+    }
+
     componentDidMount () {
         console.log('this.props.data-- ', this.props.data)
+        // // Auth.authenticateUser();
+        // Auth.isUserAuthenticated();
     }
 
     // componentWillMount () {
@@ -42,21 +57,19 @@ export class Auth extends React.Component {
 
     logUser (event) {
         event.preventDefault();
-        console.log('this.state-- ', this.state);
+        //console.log('this.state-- ', this.state);
         this.props.loginUser(this.state);
+        console.log('this.props.data-- ', this.props.data)
+        Auth.authenticateUser(this.props.data);
+    }
+    logout() {
+        Auth.deauthenticateUser();
     }
 
-    // logout(event){
-    //     event.preventDefault();
-    //     this.props.logOut();
-    // }
-
-    press(){
-        console.log('1-- ', 1)
-    }
 
     render () {
-        console.log('this.props-- ', this.props);
+        let store = localStorage.getItem('token');
+        console.log('store-- ', store);
         let obj = {username: this.handleChange.bind(this, 'username'),
                     email: this.handleChange.bind(this, 'email'),
                     password: this.handleChange.bind(this, 'password'),
@@ -64,17 +77,20 @@ export class Auth extends React.Component {
                     log: this.logUser.bind(this),
                     // logout: this.logout.bind(this)
                     }
-
         let userInfo;
-        if(this.props.data === 'error login')
+        console.log('Auth.-- ', Auth.isUserAuthenticated());
+        if(Auth.isUserAuthenticated() === true && this.props.data !== undefined)
         {
-            userInfo = 'Erorr!!!'
+            userInfo = <Userinfo props={this.props} cahnge={obj}/>
         }
-        else if(this.props.data === undefined)
+        else if(Auth.isUserAuthenticated() === false)
         {
-            userInfo = 'Login or signup'
+            userInfo = 'Login or signup';
         }
-        else {userInfo = <Userinfo props={this.props} />}
+        else
+        {
+            userInfo = 'Login or signup';
+        }
 
         let registerform;
         if(this.state.page == 'login')
@@ -89,6 +105,7 @@ export class Auth extends React.Component {
                 <p>Login or Register with:</p>
                 <input type="submit" value="Sign up" onClick={this.select.bind(this, 'login')} />
                 <input type="submit" value="Login" onClick={this.select.bind(this, 'signup')}/>
+                <input type="submit" value="Logout" onClick={this.logout.bind(this, 'logout')}/>
                 {userInfo}
             </div>
             {registerform}
@@ -127,9 +144,12 @@ function Loginform(props) {
 function Userinfo(props) {
     return(
         <div>
-            <span>Email: {props.props.data.email}</span> <br />
-            <span>UserID:{props.props.data.id}</span> <br />
-            {/*<input value="Logout" type="button" onClick={props.change.logout}/>*/}
+            {/*<span>Email: {props.props.data.email}</span> <br />*/}
+            {/*<span>UserID:{props.props.data.id}</span> <br />*/}
+            {/*<button type="button" onClick={Auth.press.bind(this)}>Logout</button>*/}
+            {/*<span>Email: {localStorage.getItem(token)}</span> <br />*/}
+            {/*<span>UserID:{props.props.data.id}</span> <br />*!/*/}
+
         </div>
     )
 }
