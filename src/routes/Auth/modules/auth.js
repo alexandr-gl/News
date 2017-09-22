@@ -7,14 +7,13 @@ export const ADD_USER = 'ADD_USER';
 export const LOGIN_USER = 'LOGIN_USER';
 export const GET_INFO = 'GET_INFO';
 export const LOG_OUT = 'LOG_OUT';
-
+export const FACE_BOOK = 'FACE_BOOK'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export function addUser(data) {
     delete data.page;
-    console.log('data-- ', data)
     return (dispatch) => {
         axios.post('/users', data)
             .then(function (response) {
@@ -29,14 +28,41 @@ export function addUser(data) {
             });
     }
 }
+//-----------------------------------------------------------------------------------
+//FACEBOOK
+//-----------------------------------------------------------------------------------
+export function loginFB() {
+    return (dispatch) => {
+        axios.get('users/auth/facebook/callback')
+            .then(function (response) {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: response
+                })
+            })
+            .catch(function (error) {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: 'error login'
+                })
+                console.log(error);
+            });
+    }
+}
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+
 export function loginUser(data) {
     delete data.page;
-    console.log('data-- ', data)
     return (dispatch) => {
         axios.post('/users/login', data)
             .then(function (response) {
                 let decode = jwt.decode(response.data.user);
                 console.log('response from server login', decode);
+                localStorage.setItem('token', JSON.stringify(decode));
+                console.log('localStorage.getItem()-- ', localStorage.getItem('token'));
+                console.log('localStorage.getItem()-- ', JSON.parse(localStorage.getItem('token')));
                 dispatch({
                     type: LOGIN_USER,
                     payload: decode
@@ -85,7 +111,7 @@ export function logOut() {
 }
 
 export const actions = {
-    addUser, loginUser, getInfo
+    addUser, loginUser, getInfo, loginFB
 }
 
 // ------------------------------------
@@ -95,7 +121,8 @@ export const ACTION_HANDLERS = {
     [ADD_USER]    : (state, action) => {return Object.assign({},state,{data:action.payload})},
     [LOGIN_USER]    : (state, action) => {return Object.assign({},state,{data:action.payload})},
     [GET_INFO] : (state, action) => {return Object.assign({},state,{data:action.payload})},
-    [LOG_OUT] : (state, action) => {return Object.assign({},state,{data:action.payload})}
+    [LOG_OUT] : (state, action) => {return Object.assign({},state,{data:action.payload})},
+    [FACE_BOOK] : (state, action) => {return Object.assign({},state,{data:action.payload})}
 }
 
 

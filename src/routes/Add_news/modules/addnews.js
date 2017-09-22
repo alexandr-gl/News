@@ -18,6 +18,7 @@ export const ADD_NEWS = 'ADD_NEWS';
 // Actions
 // ------------------------------------
 export function addNews(data) {
+    console.log('data.file-- ', data.file);
     let formData = new FormData("fileinfo");
     formData.append("author", data.author)
     formData.append("topic", data.topic)

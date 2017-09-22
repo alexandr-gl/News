@@ -51,5 +51,29 @@ router.post('/login',  passport.authenticate('local-login'), function(req, res) 
     });
     });
 
+// =====================================
+// FACEBOOK ROUTES =====================
+// =====================================
+// route for facebook authentication and login
+router.get('/login/facebook',
+    passport.authenticate('facebook', { scope : 'email' }
+    ));
+
+
+router.get('/login/facebook/callback', passport.authenticate('facebook'), (req, res) => {
+    console.log('req.user-- ', req.user);
+    const payload = {
+        // id: req.user.id,
+        // email: req.user.email,
+        // name: req.user.name,
+        // surname: req.user.surname,
+        // description: req.user.description,
+        // image: req.user.image
+        user: req.user
+    };
+    const token = jwt.sign(payload, jwtsecret);
+    //res.redirect(`/news?jwtToken=${token}`);
+    res.send(token);
+});
 
 module.exports = router;
