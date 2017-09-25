@@ -103,4 +103,7 @@ img
 }
 
 
-
+input:invalid, input:focus:invalid {
+  background-image: url(/images/invalid.png);
+  background-position: right top;
+  background-repeat: no-repeat; }

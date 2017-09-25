@@ -63,17 +63,17 @@ router.get('/login/facebook',
 router.get('/login/facebook/callback', passport.authenticate('facebook'), (req, res) => {
     console.log('req.user-- ', req.user);
     const payload = {
-        // id: req.user.id,
-        // email: req.user.email,
-        // name: req.user.name,
-        // surname: req.user.surname,
-        // description: req.user.description,
-        // image: req.user.image
-        user: req.user
+        id: req.user.id,
+        email: req.user.facebook.email,
+        name: req.user.facebook.name,
+        surname: req.user.facebook.surname,
+        description: req.user.facebook.description,
+        image: req.user.facebook.image
     };
+    console.log('payload-- ', payload);
     const token = jwt.sign(payload, jwtsecret);
-    //res.redirect(`/news?jwtToken=${token}`);
-    res.send(token);
+    console.log('token-- ', token);
+    res.redirect(`/auth?jwtToken=${token}`);
 });
 
 module.exports = router;

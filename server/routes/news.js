@@ -40,7 +40,7 @@ router.post('/', upload.single('file'), function(req, res) {
     req.body.file = '/' + req.file.path.substr(7)
     modelNews.create(req.body, function (err, result) {
         if(err || !result){
-            return res.send({error: 'Tasks not uploaded'});
+            return res.send({error: 'News not uploaded'});
         }
         res.send(result);
     });
@@ -50,18 +50,10 @@ router.post('/', upload.single('file'), function(req, res) {
 router.get('/getnews/', function(req, res) {
     return modelNews.find(function (err, result) {
         if (err || !result) {
-            return res.send({error: 'Tasks wasnt got'});
+            return res.send({error: 'News wasnt got'});
         }
-
         res.send(result);
     });
-    // modelNews.create({text: 'dahjfh', author: 'Vasya', topic: 'shit', tags:'kek lol'}, function (err, result) {
-    //     if(err || !result){
-    //         return res.send({error: 'Tasks not uploaded'});
-    //     }
-    //     res.send(result);
-    //     console.log(result);
-    // });
 });
 
 module.exports = router;

@@ -1,4 +1,5 @@
 import React from 'react'
+import jwt from 'jsonwebtoken'
 import {addNews} from "../modules/addnews";
 
 export class Addnews extends React.Component {
@@ -21,9 +22,11 @@ export class Addnews extends React.Component {
     static isUserAuthenticated() {
         return localStorage.getItem('token') !== null;
     }
-
+    // static authenticateUser(token) {
+    //     localStorage.setItem('token', token);
+    // }
     componentDidMount () {
-        console.log('this.props.something-- ',this.props )
+        console.log('this.props.something-- ', this.props)
     }
 
     // componentWillMount () {
@@ -66,6 +69,7 @@ export class Addnews extends React.Component {
     }
 
     render () {
+        console.log('local kekekekek-- ', localStorage.getItem('token'));
         let obj = {
             author: this.handleChange.bind(this, 'author'),
             topic: this.handleChange.bind(this, 'topic'),
