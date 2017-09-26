@@ -70,8 +70,7 @@ export class Addnews extends React.Component {
 
     render () {
         let username = JSON.parse(localStorage.getItem('token'));
-        console.log('username-- ', username);
-        this.state.author = username.name;
+        console.log('username-- ', localStorage.getItem('token'));
         console.log('local kekekekek-- ', localStorage.getItem('token'));
         let obj = {
             author: this.handleChange.bind(this, 'author'),
@@ -81,9 +80,10 @@ export class Addnews extends React.Component {
             send: this.makeNews.bind(this)
             //addFile: this.fileInput
         };
-        let addform
+        let addform;
         if(Addnews.isUserAuthenticated() === true)
         {
+            this.state.author = username.name;
             addform = <Add props={this.state} funcs={obj} image={(input) => { this.fileInput = input }} />;
             console.log('11111111-- ', Addnews.isUserAuthenticated())
         }
@@ -97,7 +97,7 @@ export class Addnews extends React.Component {
         else
         {
             //userInfo = 'Login or signup';
-            //addform = <Signuporlog />
+            addform = 'Login or signup';
             console.log('333333333-- ', Addnews.isUserAuthenticated())
         }
         console.log('this-- ', this);
