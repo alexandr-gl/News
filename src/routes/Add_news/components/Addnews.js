@@ -69,6 +69,9 @@ export class Addnews extends React.Component {
     }
 
     render () {
+        let username = JSON.parse(localStorage.getItem('token'));
+        console.log('username-- ', username);
+        this.state.author = username.name;
         console.log('local kekekekek-- ', localStorage.getItem('token'));
         let obj = {
             author: this.handleChange.bind(this, 'author'),
@@ -128,7 +131,7 @@ function Add(props) {
         <div className="add-news">
             <form className="add-news__form" onSubmit={props.funcs.send} name="fileinfo">
 
-                <input value={props.props.author} name="author" placeholder="Write your name" onChange={props.funcs.author}/>
+                <input value={props.props.author} name="author" placeholder="Write your name" onChange={props.funcs.author} disabled/>
 
                 <input value={props.props.topic} name="topic" placeholder="Write tittle" onChange={props.funcs.topic}/>
 

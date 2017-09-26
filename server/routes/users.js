@@ -15,12 +15,17 @@ router.get('/logout', function(req, res) {
 
 //process the signup form
 router.post('/', passport.authenticate('local-signup'), function(req, res){
-        console.log('req-- ', req);
-        console.log('authInfo-- ', req.authInfo);
-       //   if  (err || !result){
-       //       return res.send({req.authInfo: 'Tasks not uploaded'});
-       //   }
-       // res.send(result);
+        const payload = {
+            id: req.user._id,
+            email: req.user.local.email,
+            password: req.user.local.password,
+            name: req.user.local.username
+        };
+        console.log('payload-- ', payload)
+        const token = jwt.sign(payload, jwtsecret);
+        res.send({
+            user : token // get the user out of session and pass to template
+        });
 });
 
 
@@ -38,11 +43,12 @@ function isLoggedIn(req, res, next) {
 
 // process the login form
 router.post('/login',  passport.authenticate('local-login'), function(req, res) {
-    console.log('777777-- ', 777777)
+    console.log('req.user-- ', req.user);
     const payload = {
         id: req.user._id,
         email: req.user.local.email,
-        password: req.user.local.password
+        password: req.user.local.password,
+        name: req.user.local.username
     };
     console.log('payload-- ', payload)
     const token = jwt.sign(payload, jwtsecret);

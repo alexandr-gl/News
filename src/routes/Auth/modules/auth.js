@@ -17,14 +17,17 @@ export function addUser(data) {
     return (dispatch) => {
         axios.post('/users', data)
             .then(function (response) {
-                console.log('response from server-------------', response.data);
+                let decode = jwt.decode(response.data.user);
+                localStorage.setItem('token', JSON.stringify(decode));
                 dispatch({
                     type: ADD_USER,
                     payload: response.data
                 })
+                alert('Registration successful');
             })
             .catch(function (error) {
                 console.log(error);
+                alert('User with this email has already exist');
             });
     }
 }
@@ -73,7 +76,7 @@ export function loginUser(data) {
                    type: LOGIN_USER,
                    payload: 'error login'
                 })
-                console.log(error);
+                alert("This user doesn't exist or password is wrong. Please check your email and password or signUp");
             });
     }
 }

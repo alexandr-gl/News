@@ -1,14 +1,15 @@
 import React from 'react'
 import jwt from 'jsonwebtoken'
 import {addUser, loginUser, getInfo, logOut, loginFB} from "../modules/auth";
-import { IndexLink, Link } from 'react-router'
+import { IndexLink, Link, browserHistory } from 'react-router'
+import validator from 'validator';
 
 export class Auth extends React.Component {
     constructor (props) {
         super(props)
          this.state = {
             page: '',
-             // username: '',
+             name: '',
              email: '',
              password: '',
              }
@@ -48,12 +49,18 @@ export class Auth extends React.Component {
 
     select(e) {
         this.setState({page: e});
+        // let rout = '/auth/' + e;
+        // browserHistory.push(rout);
     }
 
     registerUser (event) {
         event.preventDefault();
-        console.log('this.state-- ', this.state)
-        this.props.addUser(this.state);
+        if(validator.isEmail(this.state.email) !== true){
+            alert('Email is invalid');
+        }
+        else{
+        this.props.addUser(this.state);}
+        this.render();
     }
 
     logUser (event) {
@@ -68,6 +75,7 @@ export class Auth extends React.Component {
             email: '',
             password: '',
         });
+        browserHistory.push('/auth');
         this.render();
     }
     facebook() {
@@ -80,28 +88,29 @@ export class Auth extends React.Component {
     }
 
     render () {
-        //localStorage.removeItem('token');
-        console.log('this.props-- ', this.props)
         let store = JSON.parse(localStorage.getItem('token'));
         console.log('store-- ', store);
-        let obj = {username: this.handleChange.bind(this, 'username'),
+        let obj = {name: this.handleChange.bind(this, 'name'),
                     email: this.handleChange.bind(this, 'email'),
                     password: this.handleChange.bind(this, 'password'),
                     reg: this.registerUser.bind(this),
                     log: this.logUser.bind(this),
-                    logout: this.logout.bind(this)
+                    logout: this.logout.bind(this),
+                    selectin: this.select.bind(this, 'login'),
+                    selectup: this.select.bind(this, 'signup')
                     };
-        console.log('obj-- ', obj)
         let userInfo;
+        let isLoggedIn;
         if(Auth.isUserAuthenticated() === true)
         {
             userInfo = <Userinfo props={store} change={obj}/>
+            isLoggedIn = 'You are logged in'
             console.log('11111111-- ', Auth.isUserAuthenticated())
         }
         else if(Auth.isUserAuthenticated() === false)
         {
             userInfo = 'Login or signup';
-            //userInfo = <Signuporlog />
+            isLoggedIn = <Selectbtn props={obj} />;
             console.log('222222222-- ', Auth.isUserAuthenticated())
             console.log('userInfo-- ', userInfo);
         }
@@ -109,6 +118,7 @@ export class Auth extends React.Component {
         {
             //userInfo = 'Login or signup';
             userInfo = <Signuporlog />
+            isLoggedIn = <Selectbtn props={obj} />;
             console.log('333333333-- ', Auth.isUserAuthenticated())
         }
         let registerform;
@@ -120,12 +130,8 @@ export class Auth extends React.Component {
         return(<div className="container">
 
             <div className="jumbotron text-center">
-                <h1><span className="fa fa-lock"></span> Node Authentication</h1>
-
-                <p>Login or Register with:</p>
-                <input type="submit" value="Sign up" onClick={this.select.bind(this, 'login')} />
-                <input type="submit" value="Login" onClick={this.select.bind(this, 'signup')}/>
-                <a href='/users/login/facebook' className="btn btn-primary button__social center-block">Facebook</a>
+                <h1><span className="fa fa-lock"></span> Authentication</h1>
+                {isLoggedIn}
                 {userInfo}
             </div>
             {registerform}
@@ -139,9 +145,11 @@ function Registerform(props) {
             <form className="add-news__form" onSubmit={props.change.reg} name="reguser">
                 {/*<input value={props.props.username} onChange={props.change.username} name="author" placeholder="Write your name"/>*/}
 
-                <input type="email" value={props.props.email} onChange={props.change.email} name="author" placeholder="Write your email" />
+                <input type="text" value={props.props.email} onChange={props.change.email} name="author" placeholder="Write your email" />
 
-                <input value={props.props.password} onChange={props.change.password} name="author" placeholder="Write your password" />
+                <input type="text" value={props.props.name} onChange={props.change.name} name="author" placeholder="Write your name" />
+
+                <input type="password" value={props.props.password} onChange={props.change.password} name="author" placeholder="Write your password" />
 
                 <input type="submit" value="Finish registration"/>
 
@@ -152,9 +160,9 @@ function Registerform(props) {
 function Loginform(props) {
     return(
         <form className="add-news__form" onSubmit={props.change.log} name="loginuser">
-            <input type="email" onChange={props.change.email} name="author" placeholder="Write your email" />
+            <input type="text" onChange={props.change.email} name="author" placeholder="Write your email" />
 
-            <input onChange={props.change.password} name="author" placeholder="Write your password" />
+            <input type="password" onChange={props.change.password} name="author" placeholder="Write your password" />
 
             <input type="submit" value="Login"/>
         </form>
@@ -163,12 +171,18 @@ function Loginform(props) {
 
 function Userinfo(props) {
     console.log('props-- ', props)
+    let email;
+    if(props.props.email === undefined)
+    {
+        email = "User haven't got email";
+    }
+    else{ email = props.props.email}
     return(
         <div>
-            <span>Email: {props.props.email}</span> <br />
+            <span>Name: {props.props.name}</span> <br />
+            <span>Email: {email}</span> <br />
             <span>UserID:{props.props.id}</span> <br />
-            {/*<Link to='/auth'><input type="button" value="Logout" onClick={props.change.logout} /></Link>*/}
-            <Link to='/auth' ></Link>
+            <input type="button" value="Logout" onClick={props.change.logout} />
         </div>
     )
 }
@@ -179,5 +193,15 @@ function Signuporlog(){
     )
 }
 
+function Selectbtn (props) {
+    return(<div>
+                <p>Login or Register with:</p>
+                <input type="submit" value="Sign up" onClick={props.props.selectin} />
+                <input type="submit" value="Login" onClick={props.props.selectup}/>
+                <a href='/users/login/facebook' className="btn btn-primary button__social center-block">Facebook</a>
+           </div>
+);
+
+}
 
 export default Auth
