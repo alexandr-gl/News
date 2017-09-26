@@ -85,9 +85,8 @@ export function getInfo(data) {
     return (dispatch) => {
         return axios.get('/users/info/' + data)
             .then(function (response) {
-                console.log('&&&&&&&&&& ', response.data[0].local);
+                console.log('999999999999 ', response.data[0].local);
                 localStorage.setItem('userdata', JSON.stringify(response.data[0].local));
-                console.log('6666669-- ', localStorage.getItem('userdata'));
                 dispatch({
                     type    : GET_INFO,
                     payload : response.data

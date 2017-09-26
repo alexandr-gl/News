@@ -35,6 +35,13 @@ export class Auth extends React.Component {
             localStorage.setItem('token', JSON.stringify(decode));
             console.log('token in facebook-- ', localStorage.getItem('token'));
         }
+        if (this.props.location.query.author !== undefined)
+        {
+            this.props.getInfo(this.props.location.query.author);
+            console.log('555555', this.props);
+            // localStorage.setItem('author', this.props.location.query.author);
+            // browserHistory.push('/auth');
+        }
     }
     handleChangeEmail (event) {
         //this.setState({ email: event.target.value })
@@ -93,6 +100,12 @@ export class Auth extends React.Component {
         let isLoggedIn;
         let registerform;
         console.log('this.props.location.query-- ', this.props.location.query.author);
+        console.log('&&&&&', this.props);
+        if(localStorage.getItem('userdata') !== null)
+        {
+            userInfo = <Seluserinfo />;
+        }
+        else{
             let store = JSON.parse(localStorage.getItem('token'));
             console.log('store-- ', store);
             let obj = {
@@ -127,7 +140,9 @@ export class Auth extends React.Component {
             }
             else if (this.state.page === 'signup') {
                 registerform = <Loginform props={this.state} change={obj}/>;
-            }
+            }}
+
+
             //return <EmailSignUpForm />;
             console.log('this.state-- ', this.state);
         //browserHistory.push('/auth');
@@ -207,11 +222,12 @@ function Selectbtn (props) {
 
 }
 
-function Seluserinfo(props){
-    console.log('Seluserinfo-- ', props);
+function Seluserinfo(){
+    let data = JSON.parse(localStorage.getItem('userdata'));
+    localStorage.removeItem('userdata');
     return(<div>
-        {/*<span>Name: {props.props.name}</span> <br />*/}
-        <span>Email: {}</span> <br />
+        <span>Name: {data.username}</span> <br />
+        <span>Email: {data.email}</span> <br />
     </div>)
 }
 
