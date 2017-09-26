@@ -88,56 +88,59 @@ export class Auth extends React.Component {
     }
 
     render () {
-        let store = JSON.parse(localStorage.getItem('token'));
-        console.log('store-- ', store);
-        let obj = {name: this.handleChange.bind(this, 'name'),
-                    email: this.handleChange.bind(this, 'email'),
-                    password: this.handleChange.bind(this, 'password'),
-                    reg: this.registerUser.bind(this),
-                    log: this.logUser.bind(this),
-                    logout: this.logout.bind(this),
-                    selectin: this.select.bind(this, 'login'),
-                    selectup: this.select.bind(this, 'signup')
-                    };
+        console.log('this.props-- ', this.props);
         let userInfo;
         let isLoggedIn;
-        if(Auth.isUserAuthenticated() === true)
-        {
-            userInfo = <Userinfo props={store} change={obj}/>
-            isLoggedIn = 'You are logged in'
-            console.log('11111111-- ', Auth.isUserAuthenticated())
-        }
-        else if(Auth.isUserAuthenticated() === false)
-        {
-            userInfo = 'Login or signup';
-            isLoggedIn = <Selectbtn props={obj} />;
-            console.log('222222222-- ', Auth.isUserAuthenticated())
-            console.log('userInfo-- ', userInfo);
-        }
-        else
-        {
-            //userInfo = 'Login or signup';
-            userInfo = <Signuporlog />
-            isLoggedIn = <Selectbtn props={obj} />;
-            console.log('333333333-- ', Auth.isUserAuthenticated())
-        }
         let registerform;
-        if(this.state.page == 'login')
-        { registerform = <Registerform props={this.state} change={obj}/>;}
-        else if (this.state.page == 'signup') {registerform = <Loginform props={this.state} change={obj}/>;}
-        //return <EmailSignUpForm />;
-        console.log('this.state-- ', this.state);
-        return(<div className="container">
+        console.log('this.props.location.query-- ', this.props.location.query.author);
+            let store = JSON.parse(localStorage.getItem('token'));
+            console.log('store-- ', store);
+            let obj = {
+                name: this.handleChange.bind(this, 'name'),
+                email: this.handleChange.bind(this, 'email'),
+                password: this.handleChange.bind(this, 'password'),
+                reg: this.registerUser.bind(this),
+                log: this.logUser.bind(this),
+                logout: this.logout.bind(this),
+                selectin: this.select.bind(this, 'login'),
+                selectup: this.select.bind(this, 'signup')
+            };
+            if (Auth.isUserAuthenticated() === true) {
+                userInfo = <Userinfo props={store} change={obj}/>;
+                isLoggedIn = 'You are logged in';
+                console.log('11111111-- ', Auth.isUserAuthenticated())
+            }
+            else if (Auth.isUserAuthenticated() === false) {
+                userInfo = 'Login or signup';
+                isLoggedIn = <Selectbtn props={obj}/>;
+                console.log('222222222-- ', Auth.isUserAuthenticated());
+                console.log('userInfo-- ', userInfo);
+            }
+            else {
+                //userInfo = 'Login or signup';
+                userInfo = <Signuporlog/>;
+                isLoggedIn = <Selectbtn props={obj}/>;
+                console.log('333333333-- ', Auth.isUserAuthenticated())
+            }
+            if (this.state.page === 'login') {
+                registerform = <Registerform props={this.state} change={obj}/>;
+            }
+            else if (this.state.page === 'signup') {
+                registerform = <Loginform props={this.state} change={obj}/>;
+            }
+            //return <EmailSignUpForm />;
+            console.log('this.state-- ', this.state);
+        //browserHistory.push('/auth');
+            return (<div className="container">
 
-            <div className="jumbotron text-center">
-                <h1><span className="fa fa-lock"></span> Authentication</h1>
-                {isLoggedIn}
-                {userInfo}
-            </div>
-            {registerform}
-        </div>)
-
-    }
+                <div className="jumbotron text-center">
+                    <h1><span className="fa fa-lock"> Authentication</span></h1>
+                    {isLoggedIn}
+                    {userInfo}
+                </div>
+                {registerform}
+            </div>)
+        }
 }
 
 function Registerform(props) {
@@ -202,6 +205,14 @@ function Selectbtn (props) {
            </div>
 );
 
+}
+
+function Seluserinfo(props){
+    console.log('Seluserinfo-- ', props);
+    return(<div>
+        {/*<span>Name: {props.props.name}</span> <br />*/}
+        <span>Email: {}</span> <br />
+    </div>)
 }
 
 export default Auth

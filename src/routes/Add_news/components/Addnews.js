@@ -102,25 +102,6 @@ export class Addnews extends React.Component {
         }
         console.log('this-- ', this);
         return(<div>{addform}</div>);
-        // return (
-        //     <div className="add-news">
-        //         <form className="add-news__form" onSubmit={this.makeNews} name="fileinfo">
-        //
-        //             <input value={this.state.author} name="author" placeholder="Write your name" onChange={this.handleChange.bind(this, 'author')}/>
-        //
-        //             <input value={this.state.topic} name="topic" placeholder="Write tittle" onChange={this.handleChange.bind(this, 'topic')}/>
-        //
-        //             <textarea value={this.state.newstext} name="newstext" className="form__add-text" placeholder="Add news text here"
-        //                       maxLength='4000' onChange={this.handleChange.bind(this, 'newstext')}/>
-        //
-        //             <input value={this.state.tags} name="tags" placeholder="Write tags" onChange={this.handleChange.bind(this, 'tags')}/>
-        //
-        //             <input type="file" name="file" ref={(input) => { this.fileInput = input }} />
-        //
-        //             <input type="submit" value="Add news"/>
-        //         </form>
-        //     </div>
-        // )
     }
 }
 
@@ -135,7 +116,7 @@ function Add(props) {
 
                 <input value={props.props.topic} name="topic" placeholder="Write tittle" onChange={props.funcs.topic}/>
 
-                <textarea value={props.props.text} name="newstext" className="form__add-text" placeholder="Add news text here"
+                <textarea value={props.props.newstext} name="newstext" className="form__add-text" placeholder="Add news text here"
                           maxLength='4000' onChange={props.funcs.newstext}/>
 
                 <input value={props.props.tags} name="tags" placeholder="Write tags" onChange={props.funcs.tags} />

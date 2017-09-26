@@ -2,7 +2,6 @@
 // Constants
 // ------------------------------------
 export const GET_NEWS = 'GET_NEWS';
-
 import axios from 'axios';
 
 /*
@@ -12,6 +11,7 @@ import axios from 'axios';
 export const actions = {
     getNews
 }
+
 
 
 // ------------------------------------

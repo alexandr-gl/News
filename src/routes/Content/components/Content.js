@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {getNews} from "../modules/content";
+import { IndexLink, Link } from 'react-router'
 
 
 export class Content extends React.Component {
@@ -26,6 +27,11 @@ export class Content extends React.Component {
     handleClickDropFilter()
     {
         this.setState({tag: ''});
+    }
+
+    authorInf(e){
+        localStorage.setItem('selAuthor', e);
+        this.props.getInfo(e);
     }
 
     handleChange(type, event) {
@@ -94,6 +100,7 @@ export class Content extends React.Component {
         {
             pages = Math.trunc(libraries.length/3) + 1;
         }
+
         libraries = libraries.slice(firstNews, lastNews);
         return (
             <div className="news">
@@ -103,7 +110,7 @@ export class Content extends React.Component {
                     return <li  className="news__li" key={index}>
                         <span><h1>{news.topic}</h1></span><br />
                         <span>{news.newstext}</span><br />
-                        <span>Author: {news.author}</span>
+                        <span>Author: <Link to={`/auth?author=${news.author}`} >{news.author}</Link></span>
                         <span>Tags: {news.tags}</span>
                         <img src={news.file} />
                     </li>

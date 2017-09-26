@@ -33,14 +33,14 @@ export function addNews(data) {
     return (dispatch) => {
         axios.post('/news', formData)
             .then(function (response) {
-                console.log('response from server-------------', response.data);
+                alert('News were added successfully')
                 dispatch({
                     type: ADD_NEWS,
                     payload: response.data
                 })
             })
             .catch(function (error) {
-                console.log(error);
+                alert('Error. Something go wrong');
             });
     }
 

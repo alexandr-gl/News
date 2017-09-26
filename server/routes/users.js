@@ -82,4 +82,16 @@ router.get('/login/facebook/callback', passport.authenticate('facebook'), (req, 
     res.redirect(`/auth?jwtToken=${token}`);
 });
 
+router.get('/info/:name', function(req, res) {
+    console.log('req.params.name-- ', req.params.name)
+    modelUsers.find({'local.username':  req.params.name}, function (err, result) {
+        if (err || !result) {
+            return res.send({error: 'News wasnt got'});
+        }
+        console.log('result-- ', result);
+        return res.send(result);
+
+    });
+});
+
 module.exports = router;

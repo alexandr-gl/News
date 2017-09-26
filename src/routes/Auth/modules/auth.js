@@ -81,11 +81,13 @@ export function loginUser(data) {
     }
 }
 
-export function getInfo() {
+export function getInfo(data) {
     return (dispatch) => {
-        return axios.get('/users/signup')
+        return axios.get('/users/info/' + data)
             .then(function (response) {
-                console.log('response-- ', response.data);
+                console.log('&&&&&&&&&& ', response.data[0].local);
+                localStorage.setItem('userdata', JSON.stringify(response.data[0].local));
+                console.log('6666669-- ', localStorage.getItem('userdata'));
                 dispatch({
                     type    : GET_INFO,
                     payload : response.data

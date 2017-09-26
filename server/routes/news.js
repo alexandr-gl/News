@@ -37,7 +37,10 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage});
 
 router.post('/', upload.single('file'), function(req, res) {
-    req.body.file = '/' + req.file.path.substr(7)
+    if(req.file !== undefined) {
+        req.body.file = '/' + req.file.path.substr(7);
+    }
+    else{req.body.file = ''};
     modelNews.create(req.body, function (err, result) {
         if(err || !result){
             return res.send({error: 'News not uploaded'});
