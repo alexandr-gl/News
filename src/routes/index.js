@@ -2,7 +2,6 @@
 import CoreLayout from '../layouts/PageLayout/PageLayout'
 import Home from './Home'
 import Content from './Content'
-import CounterRoute from './Counter'
 import Somekey from './Add_news'
 import Auth from './Auth'
 
@@ -14,7 +13,6 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [
-      CounterRoute(store),
       Content(store),
       Somekey(store),
       Auth(store)
