@@ -59,4 +59,15 @@ router.get('/getnews/', function(req, res) {
     });
 });
 
+router.get('/getusrnews/:name', function(req, res) {
+    console.log('req.params.name-- ', req.params.name)
+    modelNews.find({author:  req.params.name}, function (err, result) {
+        if (err || !result) {
+            return res.send({error: 'News wasnt got'});
+        }
+        return res.send(result);
+
+    });
+});
+
 module.exports = router;

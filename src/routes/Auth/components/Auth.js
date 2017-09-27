@@ -1,9 +1,9 @@
 import React from 'react'
 import jwt from 'jsonwebtoken'
-import {addUser, loginUser, getInfo, logOut, loginFB} from "../modules/auth";
+import {addUser, loginUser, getInfo, logOut, loginFB, getNewsUsr} from "../modules/auth";
 import { IndexLink, Link, browserHistory } from 'react-router'
 import validator from 'validator';
-import PageLayout from '../../../layouts/PageLayout/PageLayout.js'
+
 
 export class Auth extends React.Component {
     constructor (props) {
@@ -13,6 +13,7 @@ export class Auth extends React.Component {
              name: '',
              email: '',
              password: '',
+             news: '',
              }
     }
     static authenticateUser(token) {
@@ -23,7 +24,6 @@ export class Auth extends React.Component {
     }
     static deauthenticateUser() {
         localStorage.removeItem('token');
-        console.log('del token-- ', localStorage.getItem('token'));
         let isLog = 'Sign up';
     }
 
@@ -33,18 +33,24 @@ export class Auth extends React.Component {
     }
 
     componentWillMount () {
+        console.log('33333333333-- ', this.props.location.query.author === undefined)
         if (this.props.location.query.jwtToken && !Auth.isUserAuthenticated()) {
             let decode = jwt.decode(this.props.location.query.jwtToken)
             localStorage.setItem('token', JSON.stringify(decode));
-            console.log('token in facebook-- ', localStorage.getItem('token'));
             location.reload();
         }
         if (this.props.location.query.author !== undefined)
         {
             this.props.getInfo(this.props.location.query.author);
-            console.log('555555', this.props);
+            this.props.getNewsUsr(this.props.location.query.author);
             // localStorage.setItem('author', this.props.location.query.author);
             // browserHistory.push('/auth');
+        }
+        else if(this.props.location.query.author === undefined)
+        {
+            let name = JSON.parse(localStorage.getItem('token'));
+            name = name.username;
+            this.props.getNewsUsr(name);
         }
     }
     handleChangeEmail (event) {
@@ -94,13 +100,20 @@ export class Auth extends React.Component {
         location.reload();
     }
 
+    pagination (numPages) {
+        this.myArray=[];
+
+        for(let i = 0; i<numPages; i++)
+        {
+            this.myArray.push( <button key={i} className="pagination__pages" onClick={this.handleClickPages.bind(this, i)} >{i+1}</button>)
+        }
+    }
+
     render () {
-        console.log('this.props-- ', this.props);
         let userInfo;
         let isLoggedIn;
         let registerform, profile;
-        console.log('this.props.location.query-- ', this.props.location.query.author);
-        console.log('&&&&&', this.props);
+        console.log('&&&&-- ', localStorage.getItem('userdata'));
         if(localStorage.getItem('userdata') !== null)
         {
             userInfo = <Seluserinfo />;
@@ -108,7 +121,6 @@ export class Auth extends React.Component {
         }
         else{
             let store = JSON.parse(localStorage.getItem('token'));
-            console.log('store-- ', store);
             let obj = {
                 name: this.handleChange.bind(this, 'name'),
                 email: this.handleChange.bind(this, 'email'),
@@ -123,21 +135,17 @@ export class Auth extends React.Component {
                 userInfo = <Userinfo props={store} change={obj}/>;
                 isLoggedIn = 'You are logged in';
                 profile =  <h1><span className="fa fa-lock"> Your profile</span></h1>;
-                console.log('11111111-- ', Auth.isUserAuthenticated())
             }
             else if (Auth.isUserAuthenticated() === false) {
                 userInfo = 'Login or signup';
                 isLoggedIn = <Selectbtn props={obj}/>;
                 profile =  <h1><span className="fa fa-lock"> Authentication</span></h1>;
-                console.log('222222222-- ', Auth.isUserAuthenticated());
-                console.log('userInfo-- ', userInfo);
             }
             else {
                 //userInfo = 'Login or signup';
                 userInfo = <Signuporlog/>;
                 isLoggedIn = <Selectbtn props={obj}/>;
                 profile =  <h1><span className="fa fa-lock"> Authentication</span></h1>
-                console.log('333333333-- ', Auth.isUserAuthenticated())
             }
             if (this.state.page === 'login') {
                 registerform = <Registerform props={this.state} change={obj}/>;
@@ -147,9 +155,7 @@ export class Auth extends React.Component {
             }}
 
 
-            //return <EmailSignUpForm />;
-            console.log('this.state-- ', this.state);
-        //browserHistory.push('/auth');
+            let libraries = JSON.parse(localStorage.getItem('news'));
             return (<div className="container">
 
                 <div className="jumbotron text-center">
@@ -157,6 +163,15 @@ export class Auth extends React.Component {
                     {profile}
                     {isLoggedIn}
                     {userInfo}
+                    {libraries.map(function(news, index){
+                        return <li  className="news__li" key={index}>
+                            <span><h1>{news.topic}</h1></span><br />
+                            <span>{news.newstext}</span><br />
+                            <span>Author: <Link to={`/auth?author=${news.author}`} >{news.author}</Link></span>
+                            <span>Tags: {news.tags}</span>
+                            <img src={news.file} />
+                        </li>
+                    })}
                 </div>
                 {registerform}
             </div>)
@@ -193,7 +208,6 @@ function Loginform(props) {
 }
 
 function Userinfo(props) {
-    console.log('props-- ', props)
     let email;
     if(props.props.email === undefined)
     {
@@ -226,13 +240,17 @@ function Selectbtn (props) {
 
 }
 
-function Seluserinfo(){
+ function Seluserinfo() {
     let data = JSON.parse(localStorage.getItem('userdata'));
-    localStorage.removeItem('userdata');
-    return(<div>
-        <span>Name: {data.username}</span> <br />
-        <span>Email: {data.email}</span> <br />
-    </div>)
-}
+    let libraries = JSON.parse(localStorage.getItem('news'));
+    console.log('libraries-- ', libraries);
+    return(
+
+        <div>
+            <span>Name: {data.username}</span> <br />
+
+            <span>Email: {data.email}</span> <br /> </div>)
+        }
+
 
 export default Auth

@@ -8,6 +8,7 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const GET_INFO = 'GET_INFO';
 export const LOG_OUT = 'LOG_OUT';
 export const FACE_BOOK = 'FACE_BOOK'
+export const GET_USRNEWS = 'GET_USRNEWS';
 
 // ------------------------------------
 // Actions
@@ -62,10 +63,7 @@ export function loginUser(data) {
         axios.post('/users/login', data)
             .then(function (response) {
                 let decode = jwt.decode(response.data.user);
-                console.log('response from server login', decode);
                 localStorage.setItem('token', JSON.stringify(decode));
-                console.log('localStorage.getItem()-- ', localStorage.getItem('token'));
-                console.log('localStorage.getItem()-- ', JSON.parse(localStorage.getItem('token')));
                 dispatch({
                     type: LOGIN_USER,
                     payload: decode
@@ -85,7 +83,6 @@ export function getInfo(data) {
     return (dispatch) => {
         return axios.get('/users/info/' + data)
             .then(function (response) {
-                console.log('999999999999 ', response.data[0].local);
                 localStorage.setItem('userdata', JSON.stringify(response.data[0].local));
                 dispatch({
                     type    : GET_INFO,
@@ -113,9 +110,26 @@ export function logOut() {
             })
     }
 }
+export function getNewsUsr(data) {
+    return (dispatch, getState) => {
+        return axios.get('/news/getusrnews/' + data)
+            .then(function (response) {
+                localStorage.setItem('news', JSON.stringify(response.data));
+                dispatch({
+                    type    : GET_USRNEWS,
+                    payload : response.data
+                })
+            })
+            .catch(function (error) {
+                console.log('Request failed', error)
+            })
+    }
+}
+
+
 
 export const actions = {
-    addUser, loginUser, getInfo, loginFB
+    addUser, loginUser, getInfo, loginFB, getNewsUsr
 }
 
 // ------------------------------------
@@ -126,7 +140,8 @@ export const ACTION_HANDLERS = {
     [LOGIN_USER]    : (state, action) => {return Object.assign({},state,{data:action.payload})},
     [GET_INFO] : (state, action) => {return Object.assign({},state,{data:action.payload})},
     [LOG_OUT] : (state, action) => {return Object.assign({},state,{data:action.payload})},
-    [FACE_BOOK] : (state, action) => {return Object.assign({},state,{data:action.payload})}
+    [FACE_BOOK] : (state, action) => {return Object.assign({},state,{data:action.payload})},
+    [GET_USRNEWS] : (state, action) => {return Object.assign({},state,{data:action.payload})}
 }
 
 

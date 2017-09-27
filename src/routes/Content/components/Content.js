@@ -56,6 +56,7 @@ export class Content extends React.Component {
     render() {
         let flt = this.filterT;
         let libraries = this.props.data;
+        console.log('CONTENT-- ', libraries)
         let searchString = this.state.search.trim().toLowerCase();
         let searchTags = this.state.tag.trim().toLowerCase();
         let firstNews = this.state.numPage + 2 * this.state.numPage;
@@ -68,10 +69,13 @@ export class Content extends React.Component {
             var obj = {};
             for (let j = 0; j < libraries.length; j++) {
                 for (var i = 0; i < lbtags.length; i++) {
-                    var str = lbtags[j][i];
-                    obj[str] = true; // запомнить строку в виде свойства объекта
+                    if(lbtags[j][i] != undefined) {
+                        var str = lbtags[j][i];
+                        obj[str] = true; // запомнить строку в виде свойства объекта
+                    }
                 }
             }
+            console.log('OBJEC-- ', obj);
         lbtags = Object.keys(obj);
 
         // поиск по любым вхождениям
@@ -92,7 +96,7 @@ export class Content extends React.Component {
 
         //пагинация
         let pages;
-        if (pages%3 == 0)
+        if (libraries.length%3 == 0)
         {
             pages = libraries.length/3;
         }
@@ -100,7 +104,7 @@ export class Content extends React.Component {
         {
             pages = Math.trunc(libraries.length/3) + 1;
         }
-
+        console.log('pages-- ', pages);
         libraries = libraries.slice(firstNews, lastNews);
         return (
             <div className="news">
@@ -128,4 +132,5 @@ export class Content extends React.Component {
         )
     }
 }
+
 export default Content
