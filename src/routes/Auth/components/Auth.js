@@ -14,6 +14,7 @@ export class Auth extends React.Component {
              email: '',
              password: '',
              news: '',
+             numPage: 0
              }
     }
     static authenticateUser(token) {
@@ -27,7 +28,9 @@ export class Auth extends React.Component {
         let isLog = 'Sign up';
     }
 
-
+    handleClickPages(pageNum) {
+        this.setState({numPage: pageNum});
+    }
     componentDidMount () {
 
     }
@@ -160,9 +163,21 @@ export class Auth extends React.Component {
             else if (this.state.page === 'signup') {
                 registerform = <Loginform props={this.state} change={obj}/>;
             }}
+            let pages;
             let libraries;
             if(localStorage.getItem('news') !== null) {
                 libraries = JSON.parse(localStorage.getItem('news'));
+                if (libraries.length%3 == 0)
+                {
+                    pages = libraries.length/3;
+                }
+                else
+                {
+                    pages = Math.trunc(libraries.length/3) + 1;
+                }
+                let firstNews = this.state.numPage + 2 * this.state.numPage;
+                let lastNews = firstNews + 3;
+                libraries = libraries.slice(firstNews, lastNews);
             }
             else {libraries = [];}
             console.log('libraries-- ', libraries)
@@ -173,17 +188,19 @@ export class Auth extends React.Component {
                     {profile}
                     {isLoggedIn}
                     {userInfo}
-                    {libraries.map(function(news, index){
-                        return <li  className="news__li" key={index}>
-                            <span><h1>{news.topic}</h1></span><br />
-                            <span>{news.newstext}</span><br />
-                            <span>Author: <Link to={`/auth?author=${news.author}`} >{news.author}</Link></span>
-                            <span>Tags: {news.tags}</span>
-                            <img src={news.file} />
-                        </li>
-                    })}
                 </div>
                 {registerform}
+                {libraries.map(function(news, index){
+                    return <li  className="news__li2" key={index}>
+                        <span><h1>{news.topic}</h1></span><br />
+                        <span>{news.newstext}</span><br />
+                        <span>Author: <Link to={`/auth?author=${news.author}`} >{news.author}</Link></span>
+                        <span>Tags: {news.tags}</span>
+                        <img src={news.file} />
+                    </li>
+                })}
+                    <div className="pagination">{this.pagination(pages)}</div>
+                    {this.myArray.map((itm)=>{return itm})}
             </div>)
         }
 }
