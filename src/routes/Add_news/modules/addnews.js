@@ -18,7 +18,6 @@ export const ADD_NEWS = 'ADD_NEWS';
 // Actions
 // ------------------------------------
 export function addNews(data) {
-    console.log('data.file-- ', data.file);
     let formData = new FormData("fileinfo");
     formData.append("author", data.author)
     formData.append("topic", data.topic)
@@ -26,9 +25,9 @@ export function addNews(data) {
     formData.append("tags", data.tags)
     formData.append("file", data.file)
 
-    for (let [key, value] of formData.entries()) {
-        console.log('-------', key, value);
-    }
+    // for (let [key, value] of formData.entries()) {
+    //     console.log('-------', key, value);
+    // }
     console.log('formData-- ', formData)
     return (dispatch) => {
         axios.post('/news', formData)

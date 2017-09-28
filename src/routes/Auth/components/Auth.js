@@ -43,21 +43,15 @@ export class Auth extends React.Component {
         }
         if (this.props.location.query.author !== undefined)
         {
-            console.log('NOT_UNDEFINED-- ', this.props.location.query.author)
             this.props.getInfo(this.props.location.query.author);
             this.props.getNewsUsr(this.props.location.query.author);
-            // localStorage.setItem('author', this.props.location.query.author);
-            // browserHistory.push('/auth');
         }
         else if(this.props.location.query.author === undefined && Auth.isUserAuthenticated())
         {
-            console.log('UNDEFINED-- ', this.props.location.query.author);
+
             let name = JSON.parse(localStorage.getItem('token'));
-            console.log('INDEFINED_TOKEN-- ', name);
-            console.log('name.name-- ', name.name);
             name = name.name;
             this.props.getNewsUsr(name);
-            console.log('INDEFINED_NAME-- ', name);
         }
     }
     handleChangeEmail (event) {
@@ -73,8 +67,6 @@ export class Auth extends React.Component {
 
     select(e) {
         this.setState({page: e});
-        // let rout = '/auth/' + e;
-        // browserHistory.push(rout);
     }
 
     registerUser (event) {
@@ -98,7 +90,6 @@ export class Auth extends React.Component {
         event.preventDefault();
         Auth.deauthenticateUser();
         this.setState({
-            // username: '',
             email: '',
             password: '',
         });
@@ -111,17 +102,19 @@ export class Auth extends React.Component {
     pagination (numPages) {
         this.myArray=[];
 
-        for(let i = 0; i<numPages; i++)
-        {
-            this.myArray.push( <button key={i} className="pagination__pages" onClick={this.handleClickPages.bind(this, i)} >{i+1}</button>)
-        }
-    }
+        for(let i = 0; i<numPages; i++){
+            if (this.state.numPage == i) { this.myArray.push(<a key={i}> <button
+                className="pagination__btn pagination__btn_active" onClick={this.handleClickPages.bind(this, i)}>{i + 1}</button></a>) }
+            else {
+                this.myArray.push(<a key={i}> <button
+                    className="pagination__btn" onClick={this.handleClickPages.bind(this, i)}>{i + 1}</button></a>)
+            }
+    }}
 
     render () {
         let userInfo;
         let isLoggedIn;
         let registerform, profile;
-        console.log('&&&&-- ', localStorage.getItem('userdata'));
         //if(localStorage.getItem('userdata') !== null)
         if(this.props.location.query.author !== undefined)
         {
@@ -180,7 +173,6 @@ export class Auth extends React.Component {
                 libraries = libraries.slice(firstNews, lastNews);
             }
             else {libraries = [];}
-            console.log('libraries-- ', libraries)
             return (<div className="container">
 
                 <div className="jumbotron text-center">
@@ -270,7 +262,6 @@ function Selectbtn (props) {
  function Seluserinfo() {
     let data = JSON.parse(localStorage.getItem('userdata'));
     let libraries = JSON.parse(localStorage.getItem('news'));
-    console.log('libraries-- ', libraries);
     return(
 
         <div>

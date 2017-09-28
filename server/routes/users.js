@@ -21,7 +21,6 @@ router.post('/', passport.authenticate('local-signup'), function(req, res){
             password: req.user.local.password,
             name: req.user.local.username
         };
-        console.log('payload-- ', payload)
         const token = jwt.sign(payload, jwtsecret);
         res.send({
             user : token // get the user out of session and pass to template
@@ -43,14 +42,12 @@ function isLoggedIn(req, res, next) {
 
 // process the login form
 router.post('/login',  passport.authenticate('local-login'), function(req, res) {
-    console.log('req.user-- ', req.user);
     const payload = {
         id: req.user._id,
         email: req.user.local.email,
         password: req.user.local.password,
         name: req.user.local.username
     };
-    console.log('payload-- ', payload)
     const token = jwt.sign(payload, jwtsecret);
     res.send({
         user : token // get the user out of session and pass to template
@@ -67,7 +64,6 @@ router.get('/login/facebook',
 
 
 router.get('/login/facebook/callback', passport.authenticate('facebook'), (req, res) => {
-    console.log('req.user-- ', req.user);
     const payload = {
         id: req.user.id,
         email: req.user.facebook.email,
@@ -76,19 +72,15 @@ router.get('/login/facebook/callback', passport.authenticate('facebook'), (req, 
         description: req.user.facebook.description,
         image: req.user.facebook.image
     };
-    console.log('payload-- ', payload);
     const token = jwt.sign(payload, jwtsecret);
-    console.log('token-- ', token);
     res.redirect(`/auth?jwtToken=${token}`);
 });
 
 router.get('/info/:name', function(req, res) {
-    console.log('req.params.name-- ', req.params.name)
     modelUsers.find({'local.username':  req.params.name}, function (err, result) {
         if (err || !result) {
             return res.send({error: 'News wasnt got'});
         }
-        console.log('result-- ', result);
         return res.send(result);
 
     });

@@ -99,7 +99,6 @@ export function logOut() {
     return (dispatch) => {
         return axios.get('/users/logout')
             .then(function (response) {
-                console.log('response-- ', response.data);
                 dispatch({
                     type    : LOG_OUT,
                     payload : response.data

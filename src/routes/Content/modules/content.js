@@ -21,7 +21,6 @@ export function getNews() {
     return (dispatch, getState) => {
             return axios.get('/news/getnews')
             .then(function (response) {
-                console.log('response-- ', response.data);
                 dispatch({
                     type    : GET_NEWS,
                     payload : response.data
@@ -37,7 +36,6 @@ export function getNews() {
 // Action Handlers
 // ------------------------------------
 export const ACTION_HANDLERS = {
-    //GET_NEWS : (state, action) => {return {label: state.label * action.payload}}
     GET_NEWS : (state, action) => Object.assign({}, state, {
         data: action.payload,
     })

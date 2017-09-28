@@ -26,7 +26,6 @@ export class Addnews extends React.Component {
     //     localStorage.setItem('token', token);
     // }
     componentDidMount () {
-        console.log('this.props.something-- ', this.props)
     }
 
     // componentWillMount () {
@@ -54,7 +53,6 @@ export class Addnews extends React.Component {
 
     makeNews(event) {
         event.preventDefault();
-        console.log('this.fileInput-- ', this.fileInput)
         this.state.file = this.fileInput.files[0];
         this.props.addNews(this.state);
         //this.props.addNews(this.fileInput.files[0]);
@@ -70,8 +68,6 @@ export class Addnews extends React.Component {
 
     render () {
         let username = JSON.parse(localStorage.getItem('token'));
-        console.log('username-- ', localStorage.getItem('token'));
-        console.log('local kekekekek-- ', localStorage.getItem('token'));
         let obj = {
             author: this.handleChange.bind(this, 'author'),
             topic: this.handleChange.bind(this, 'topic'),
@@ -85,29 +81,22 @@ export class Addnews extends React.Component {
         {
             this.state.author = username.name;
             addform = <Add props={this.state} funcs={obj} image={(input) => { this.fileInput = input }} />;
-            console.log('11111111-- ', Addnews.isUserAuthenticated())
         }
         else if(Addnews.isUserAuthenticated() === false)
         {
             addform = 'Login or signup';
             //userInfo = <Signuporlog />
-            console.log('222222222-- ', Addnews.isUserAuthenticated())
-            console.log('addform-- ', addform);
         }
         else
         {
             //userInfo = 'Login or signup';
             addform = 'Login or signup';
-            console.log('333333333-- ', Addnews.isUserAuthenticated())
         }
-        console.log('this-- ', this);
         return(<div>{addform}</div>);
     }
 }
 
 function Add(props) {
-    console.log('Addnews.state-- ', props.props.author);
-    console.log('props.funcs-- ', props.funcs);
     return (
         <div className="add-news">
             <form className="add-news__form" onSubmit={props.funcs.send} name="fileinfo">

@@ -2,12 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {getNews} from "../modules/content";
 import { IndexLink, Link } from 'react-router'
+import './Content.scss'
+import topPosition from 'react-scroll-up'
 
 
 export class Content extends React.Component {
     constructor (props) {
         super(props)
-        this.state = {search: '', tag: '', numPage: 0, path:'' , q:'1'}
+        this.state = {search: '', tag: '', numPage: 0, path:'' , q:'1', act: 'orig'}
     //this.press = this.press.bind(this);
         this.handleChange = this.handleChange.bind(this);
         //this.pagination = this.pagination.bind(this);
@@ -41,6 +43,7 @@ export class Content extends React.Component {
 
     handleClickPages(pageNum) {
         this.setState({numPage: pageNum});
+        window.scrollTo(0, 0);
     }
 
 
@@ -49,33 +52,39 @@ export class Content extends React.Component {
 
         for(let i = 0; i<numPages; i++)
         {
-            this.myArray.push( <button key={i} className="pagination__pages" onClick={this.handleClickPages.bind(this, i)} >{i+1}</button>)
+            if (this.state.numPage == i) { this.myArray.push(<a key={i}> <button
+                className="pagination__btn pagination__btn_active" onClick={this.handleClickPages.bind(this, i)}>{i + 1}</button></a>) }
+            else {
+                this.myArray.push(<a key={i}> <button
+                    className="pagination__btn" onClick={this.handleClickPages.bind(this, i)}>{i + 1}</button></a>)
+            }
         }
     }
 
     render() {
         let flt = this.filterT;
         let libraries = this.props.data;
-        console.log('CONTENT-- ', libraries)
         let searchString = this.state.search.trim().toLowerCase();
         let searchTags = this.state.tag.trim().toLowerCase();
         let firstNews = this.state.numPage + 2 * this.state.numPage;
         let lastNews = firstNews + 3;
         // приведение тегов из бд к виду подходящему для обработки
         var lbtags = libraries.map(function(news) {
+            news.tags = news.tags.toLowerCase();
             return news.tags.split(' ');
         });
+        console.log('lbtags-- ', lbtags)
         //уникальность тегов
             var obj = {};
             for (let j = 0; j < libraries.length; j++) {
                 for (var i = 0; i < lbtags.length; i++) {
-                    if(lbtags[j][i] != undefined) {
+                    if(lbtags[j][i] !== undefined && lbtags[j][i] !== '') {
                         var str = lbtags[j][i];
+                        console.log('str-- ', str);
                         obj[str] = true; // запомнить строку в виде свойства объекта
                     }
                 }
             }
-            console.log('OBJEC-- ', obj);
         lbtags = Object.keys(obj);
 
         // поиск по любым вхождениям
@@ -104,7 +113,6 @@ export class Content extends React.Component {
         {
             pages = Math.trunc(libraries.length/3) + 1;
         }
-        console.log('pages-- ', pages);
         libraries = libraries.slice(firstNews, lastNews);
         return (
             <div className="news">
