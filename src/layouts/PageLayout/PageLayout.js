@@ -37,6 +37,9 @@ export class PageLayout extends React.Component {
     static isUserAuthenticated() {
         return localStorage.getItem('token') !== null;
     }
+    handleClick() {
+        location.reload();
+    }
     componentWillMount () {
         if(PageLayout.isUserAuthenticated() !== true)
         {
@@ -63,7 +66,7 @@ export class PageLayout extends React.Component {
                        {' · '}
                        <Link to='/somekey' activeClassName='page-layout__nav-item--active'> Add News </Link>
                        {' · '}
-                        <Link to='/auth' activeClassName='page-layout__nav-item--active'> {this.state.islog} </Link>
+                        <Link to='/auth' onClick={this.handleClick.bind(this)} activeClassName='page-layout__nav-item--active'> {this.state.islog} </Link>
                        {/*{ !PageLayout.isUserAuthenticated() && <Link to='/auth' activeClassName='page-layout__nav-item--active'> Sign up </Link> }*/}
                        {/*{  PageLayout.isUserAuthenticated() && <Link to='/auth' activeClassName='page-layout__nav-item--active'> Profile </Link> }*/}
                      <div className='page-layout__viewport'>

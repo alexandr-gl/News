@@ -33,7 +33,6 @@ export class Auth extends React.Component {
     }
 
     componentWillMount () {
-        console.log('33333333333-- ', this.props.location.query.author === undefined)
         if (this.props.location.query.jwtToken && !Auth.isUserAuthenticated()) {
             let decode = jwt.decode(this.props.location.query.jwtToken)
             localStorage.setItem('token', JSON.stringify(decode));
@@ -41,16 +40,21 @@ export class Auth extends React.Component {
         }
         if (this.props.location.query.author !== undefined)
         {
+            console.log('NOT_UNDEFINED-- ', this.props.location.query.author)
             this.props.getInfo(this.props.location.query.author);
             this.props.getNewsUsr(this.props.location.query.author);
             // localStorage.setItem('author', this.props.location.query.author);
             // browserHistory.push('/auth');
         }
-        else if(this.props.location.query.author === undefined)
+        else if(this.props.location.query.author === undefined && Auth.isUserAuthenticated())
         {
+            console.log('UNDEFINED-- ', this.props.location.query.author);
             let name = JSON.parse(localStorage.getItem('token'));
-            name = name.username;
+            console.log('INDEFINED_TOKEN-- ', name);
+            console.log('name.name-- ', name.name);
+            name = name.name;
             this.props.getNewsUsr(name);
+            console.log('INDEFINED_NAME-- ', name);
         }
     }
     handleChangeEmail (event) {
@@ -96,6 +100,7 @@ export class Auth extends React.Component {
             password: '',
         });
         browserHistory.push('/auth');
+        localStorage.removeItem('news');
         this.render();
         location.reload();
     }
@@ -114,13 +119,15 @@ export class Auth extends React.Component {
         let isLoggedIn;
         let registerform, profile;
         console.log('&&&&-- ', localStorage.getItem('userdata'));
-        if(localStorage.getItem('userdata') !== null)
+        //if(localStorage.getItem('userdata') !== null)
+        if(this.props.location.query.author !== undefined)
         {
             userInfo = <Seluserinfo />;
-            profile = profile =  <h1><span className="fa fa-lock"> Userprofile</span></h1>
+            profile = <h1><span className="fa fa-lock"> Userprofile</span></h1>
         }
         else{
             let store = JSON.parse(localStorage.getItem('token'));
+
             let obj = {
                 name: this.handleChange.bind(this, 'name'),
                 email: this.handleChange.bind(this, 'email'),
@@ -153,9 +160,12 @@ export class Auth extends React.Component {
             else if (this.state.page === 'signup') {
                 registerform = <Loginform props={this.state} change={obj}/>;
             }}
-
-
-            let libraries = JSON.parse(localStorage.getItem('news'));
+            let libraries;
+            if(localStorage.getItem('news') !== null) {
+                libraries = JSON.parse(localStorage.getItem('news'));
+            }
+            else {libraries = [];}
+            console.log('libraries-- ', libraries)
             return (<div className="container">
 
                 <div className="jumbotron text-center">
