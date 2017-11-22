@@ -19,7 +19,7 @@ var session      = require('express-session');
 
 const jwt = require('jsonwebtoken'); // аутентификация по JWT для hhtp
 const socketioJwt = require('socketio-jwt'); // аутентификация по JWT для socket.io
-const socketIO = require('socket.io');
+//const socketIO = require('socket.io');
 const crypto = require('crypto'); // модуль node.js для выполнения различных шифровальн
 
 require('./passport')(passport); // pass passport for configuration
